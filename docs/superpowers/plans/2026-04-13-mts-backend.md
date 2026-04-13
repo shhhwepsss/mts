@@ -6,7 +6,7 @@
 
 **Architecture:** Pragmatic hexagonal with domain entities separate from ORM entities. Ports defined in domain layer, adapters in infrastructure. Use cases orchestrate domain logic, controllers are thin HTTP adapters.
 
-**Tech Stack:** NestJS 10, TypeORM 0.3, PostgreSQL, @nestjs/jwt, passport-jwt, google-auth-library, class-validator, class-transformer, uuid
+**Tech Stack:** NestJS 10, TypeORM 0.3, PostgreSQL, @nestjs/jwt, passport-jwt, google-auth-library, class-validator, class-transformer, zod
 
 ---
 
@@ -14,9 +14,12 @@
 
 **Files:**
 - Create: `backend/` (NestJS project)
-- Create: `backend/src/config/app.config.ts`
-- Create: `backend/.env`
+- Create: `backend/src/config/database/database.config.ts`
+- Create: `backend/src/config/jwt/jwt.config.ts`
+- Create: `backend/src/config/google/google.config.ts`
+- Create: `backend/.env.example`
 - Modify: `backend/src/app.module.ts`
+- Modify: `backend/src/main.ts`
 
 - [ ] **Step 1: Create NestJS project**
 
@@ -29,14 +32,14 @@ npx @nestjs/cli new backend --package-manager yarn --skip-git
 
 ```bash
 cd /home/user/projects/mts/backend
-yarn add @nestjs/config @nestjs/typeorm typeorm pg @nestjs/jwt @nestjs/passport passport passport-jwt google-auth-library class-validator class-transformer uuid
-yarn add -D @types/passport-jwt @types/uuid
+yarn add @nestjs/config @nestjs/typeorm typeorm pg @nestjs/jwt @nestjs/passport passport passport-jwt google-auth-library class-validator class-transformer zod
+yarn add -D @types/passport-jwt
 ```
 
-- [ ] **Step 3: Create .env**
+- [ ] **Step 3: Create .env.example** (ConfigModule reads `.env` by default; `.env` should be gitignored)
 
 ```env
-# backend/.env
+# backend/.env.example
 DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_USERNAME=postgres
@@ -49,30 +52,68 @@ JWT_REFRESH_EXPIRATION=7d
 GOOGLE_CLIENT_ID=your-google-client-id
 ```
 
-- [ ] **Step 4: Create app.config.ts**
+- [ ] **Step 4: Create config files with Zod validation in separate folders**
 
 ```typescript
-// backend/src/config/app.config.ts
+// backend/src/config/database/database.config.ts
 import { registerAs } from '@nestjs/config';
+import { z } from 'zod/v4';
 
-export const databaseConfig = registerAs('database', () => ({
-  host: process.env.DATABASE_HOST || 'localhost',
-  port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
-  username: process.env.DATABASE_USERNAME || 'postgres',
-  password: process.env.DATABASE_PASSWORD || 'postgres',
-  database: process.env.DATABASE_NAME || 'mts',
-}));
+const databaseSchema = z.object({
+  host: z.string().default('localhost'),
+  port: z.coerce.number().default(5432),
+  username: z.string().default('postgres'),
+  password: z.string().default('postgres'),
+  database: z.string().default('mts'),
+});
 
-export const jwtConfig = registerAs('jwt', () => ({
-  accessSecret: process.env.JWT_ACCESS_SECRET,
-  refreshSecret: process.env.JWT_REFRESH_SECRET,
-  accessExpiration: process.env.JWT_ACCESS_EXPIRATION || '15m',
-  refreshExpiration: process.env.JWT_REFRESH_EXPIRATION || '7d',
-}));
+export const databaseConfig = registerAs('database', () => {
+  return databaseSchema.parse({
+    host: process.env.DATABASE_HOST,
+    port: process.env.DATABASE_PORT,
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME,
+  });
+});
+```
 
-export const googleConfig = registerAs('google', () => ({
-  clientId: process.env.GOOGLE_CLIENT_ID,
-}));
+```typescript
+// backend/src/config/jwt/jwt.config.ts
+import { registerAs } from '@nestjs/config';
+import { z } from 'zod/v4';
+
+const jwtSchema = z.object({
+  accessSecret: z.string(),
+  refreshSecret: z.string(),
+  accessExpiration: z.string().default('15m'),
+  refreshExpiration: z.string().default('7d'),
+});
+
+export const jwtConfig = registerAs('jwt', () => {
+  return jwtSchema.parse({
+    accessSecret: process.env.JWT_ACCESS_SECRET,
+    refreshSecret: process.env.JWT_REFRESH_SECRET,
+    accessExpiration: process.env.JWT_ACCESS_EXPIRATION,
+    refreshExpiration: process.env.JWT_REFRESH_EXPIRATION,
+  });
+});
+```
+
+```typescript
+// backend/src/config/google/google.config.ts
+import { registerAs } from '@nestjs/config';
+import { z } from 'zod/v4';
+
+const googleSchema = z.object({
+  clientId: z.string(),
+});
+
+export const googleConfig = registerAs('google', () => {
+  return googleSchema.parse({
+    clientId: process.env.GOOGLE_CLIENT_ID,
+  });
+});
 ```
 
 - [ ] **Step 5: Update app.module.ts**
@@ -80,9 +121,11 @@ export const googleConfig = registerAs('google', () => ({
 ```typescript
 // backend/src/app.module.ts
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { databaseConfig, jwtConfig, googleConfig } from './config/app.config';
+import { databaseConfig } from './config/database/database.config';
+import { jwtConfig } from './config/jwt/jwt.config';
+import { googleConfig } from './config/google/google.config';
 
 @Module({
   imports: [
@@ -91,14 +134,14 @@ import { databaseConfig, jwtConfig, googleConfig } from './config/app.config';
       load: [databaseConfig, jwtConfig, googleConfig],
     }),
     TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      inject: [databaseConfig.KEY],
+      useFactory: (dbConfig: ConfigType<typeof databaseConfig>) => ({
         type: 'postgres',
-        host: config.get('database.host'),
-        port: config.get('database.port'),
-        username: config.get('database.username'),
-        password: config.get('database.password'),
-        database: config.get('database.database'),
+        host: dbConfig.host,
+        port: dbConfig.port,
+        username: dbConfig.username,
+        password: dbConfig.password,
+        database: dbConfig.database,
         autoLoadEntities: true,
         synchronize: true, // dev only — use migrations in production
       }),
@@ -113,7 +156,7 @@ export class AppModule {}
 ```typescript
 // backend/src/main.ts
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -127,7 +170,10 @@ async function bootstrap() {
     }),
   );
   app.enableCors();
-  await app.listen(3000);
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port);
+  const logger = new Logger('Bootstrap');
+  logger.log(`Application started on port ${port}`);
 }
 bootstrap();
 ```
@@ -199,7 +245,7 @@ Expected: FAIL — Cannot find module './base.entity'
 
 ```typescript
 // backend/src/shared/domain/base.entity.ts
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 export abstract class BaseEntity {
   readonly id: string;
@@ -207,7 +253,7 @@ export abstract class BaseEntity {
   updatedAt: Date;
 
   constructor(id?: string) {
-    this.id = id ?? uuidv4();
+    this.id = id ?? randomUUID();
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
