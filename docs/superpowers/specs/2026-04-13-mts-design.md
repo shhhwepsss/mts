@@ -7,9 +7,11 @@ Maintenance tracking app for enduro motorcycles. Users track engine hours and ge
 ## Tech Stack
 
 - **Backend**: NestJS, PostgreSQL, TypeORM, DDD + Pragmatic Hexagonal Architecture
-- **Frontend**: React Native (Expo with dev client), Feature-Sliced Design
+- **Frontend**: Vite + React, CSS Modules, Feature-Sliced Design
+- **Landing**: Astro (static)
+- **Monorepo**: npm workspaces with shared TypeScript types
 - **Auth**: Google Sign-In → backend issues its own JWT (access + refresh)
-- **Push Notifications**: Firebase Cloud Messaging
+- **Push Notifications**: Firebase Cloud Messaging (browser notifications for web)
 - **File Storage**: Local for MVP (swappable to S3 via port)
 
 ---
@@ -268,7 +270,7 @@ Modules import each other's ports, not implementations. Example: motorcycle modu
 
 ## Auth Flow
 
-1. Mobile app gets a Google token via Google Sign-In SDK
+1. Web app gets a Google token via Google Sign-In SDK (@react-oauth/google)
 2. `POST /api/auth/google` — backend receives Google token, verifies with Google
 3. First login: create User (populate email, name, avatarUrl from Google data) + create GoogleProvider record
 4. Subsequent login: look up GoogleProvider by googleUserId → return existing User (no re-sync of User fields)
@@ -326,20 +328,41 @@ Modules import each other's ports, not implementations. Example: motorcycle modu
 
 ---
 
+## Monorepo Structure
+
+```
+mts/
+├── package.json              ← root workspace config
+├── packages/
+│   └── shared/               ← shared TypeScript types
+│       ├── src/
+│       │   ├── types/        — DTOs, enums (MotorcycleTypeEnum, TaskStatus)
+│       │   └── index.ts
+│       ├── package.json
+│       └── tsconfig.json
+│
+├── backend/                  ← NestJS (see Backend Architecture)
+├── frontend/                 ← Vite + React (see Frontend Architecture)
+└── landing/                  ← Astro (see Landing Page)
+```
+
+---
+
 ## Frontend Architecture
 
-### Tech: React Native (Expo with dev client)
+### Tech: Vite + React, CSS Modules, react-router-dom
 
-Expo tooling for fast iteration. Dev client enables custom native modules for push notifications.
+Responsive SPA with dark theme. CSS Modules for scoped styling. All form input text is white.
 
 ### Feature-Sliced Design Structure
 
 ```
-mobile/
+frontend/
 ├── src/
 │   ├── app/
-│   │   ├── providers/          — auth, query client, theme
-│   │   ├── navigation/         — auth stack, main tab navigator
+│   │   ├── providers/          — auth, query client, theme, router
+│   │   ├── router/             — route definitions
+│   │   ├── styles/             — global CSS, variables, reset
 │   │   └── index.tsx
 │   │
 │   ├── pages/
@@ -357,19 +380,20 @@ mobile/
 │   │
 │   ├── widgets/
 │   │   ├── motorcycle-card/    — card with hours + status summary
-│   │   ├── task-list/          — task list with status indicators
-│   │   └── record-list/        — maintenance history list
+│   │   ├── task-list/          — task table with status indicators
+│   │   ├── record-list/        — records history table
+│   │   └── header/             — top navbar with logo, breadcrumbs, user avatar
 │   │
 │   ├── features/
 │   │   ├── google-login/       — Google Sign-In flow
-│   │   ├── log-hours/          — update motorcycle hours
+│   │   ├── log-hours/          — update motorcycle hours (modal)
 │   │   ├── create-motorcycle/  — create motorcycle
 │   │   ├── edit-motorcycle/    — edit motorcycle details
 │   │   ├── delete-motorcycle/  — delete motorcycle
 │   │   ├── create-task/        — create custom maintenance task
 │   │   ├── edit-task/          — edit task (interval, name, active/inactive)
 │   │   ├── delete-task/        — delete custom task
-│   │   ├── complete-task/      — mark task done with notes/photos
+│   │   ├── complete-task/      — mark task done with notes/photos (modal)
 │   │   ├── edit-record/        — edit maintenance record
 │   │   └── delete-record/      — delete maintenance record
 │   │
@@ -380,54 +404,139 @@ mobile/
 │   │   └── user/               — type, API, model
 │   │
 │   └── shared/
-│       ├── ui/                 — buttons, inputs, cards, status badge
+│       ├── ui/                 — Button, Input, Card, StatusBadge, Modal, etc.
 │       ├── api/                — axios instance, interceptors, token management
 │       ├── lib/                — date utils, hour formatting
 │       └── config/             — env vars, constants
+│
+├── index.html
+├── vite.config.ts
+├── tsconfig.json
+└── package.json
 ```
 
 ### Screens
 
-1. **Login** — Google Sign-In button
-2. **Garage (Motorcycle List)** — cards with hours + overdue count, color-coded status border
-3. **Motorcycle Detail** — current hours, log hours button, task list with traffic-light indicators (red/orange/green), link to maintenance history
-4. **Complete Task** — form: performed at hours (default: current), date, notes, photos
-5. **Maintenance History** — chronological list of completed maintenance
+1. **Login** — centered card with Google Sign-In button
+2. **Garage (Motorcycle List)** — grid of motorcycle cards (2-3 cols desktop, 1 mobile), color-coded status border (red=overdue, green=all good, orange=due soon)
+3. **Motorcycle Detail** — sidebar with bike info + hours + log hours button, task table with status/interval/remaining/action columns, link to records history
+4. **Complete Task (modal)** — form: performed at hours (default: current), date, notes, photos
+5. **Records History** — table with task filter, edit/delete inline actions, pagination
 6. **Record Detail** — full record with photos, edit and delete actions
 7. **Edit Record** — same form as complete task, pre-filled with existing data
-8. **Add/Edit Motorcycle** — form: name, brand, model, year, type, current hours, photo
-9. **Profile** — name, email, logout
+8. **Add/Edit Motorcycle** — form: name, brand, model, year, type dropdown, current hours, photo upload
+9. **Profile** — avatar, name edit, email display, sign out
 
-### Navigation
+### Routing
 
 ```
-Auth Stack (unauthenticated)
-└── Login Screen
+/ (unauthenticated)
+└── /login
 
-Main Stack (authenticated)
-└── Bottom Tab Navigator
-    ├── Garage Tab
-    │   ├── Motorcycle List (home)
-    │   ├── Add/Edit Motorcycle
-    │   ├── Motorcycle Detail
-    │   │   ├── Task List (with status indicators)
-    │   │   ├── Update Hours Modal
-    │   │   └── → Task Detail / Complete Task
-    │   ├── Task Detail (edit task settings)
-    │   ├── Complete Task (add notes, photos)
-    │   └── Maintenance History
-    │       ├── Record Detail (view, edit, delete)
-    │       └── Edit Record
-    │
-    └── Profile Tab
-        └── Profile Screen
+/ (authenticated)
+├── /garage                              — motorcycle list (home)
+├── /garage/add                          — add motorcycle
+├── /garage/:id                          — motorcycle detail + task list
+├── /garage/:id/edit                     — edit motorcycle
+├── /garage/:id/tasks/:taskId            — task detail
+├── /garage/:id/tasks/:taskId/complete   — complete task
+├── /garage/:id/records                  — records history
+├── /garage/:id/records/:recordId        — record detail
+├── /garage/:id/records/:recordId/edit   — edit record
+└── /profile                             — user profile
+```
+
+### Responsive Breakpoints
+
+- **Desktop (≥1024px)** — garage 2-3 column grid, motorcycle detail sidebar + task table
+- **Tablet (768-1023px)** — garage 2 columns, motorcycle detail stacks sidebar above tasks
+- **Mobile (<768px)** — garage single column, tasks as cards instead of table, forms full-width
+- **Navigation** — top navbar on all sizes, hamburger menu on mobile
+- **Modals** — centered on desktop, full-screen on mobile
+
+### Design Tokens (CSS Variables)
+
+```css
+--bg-primary: #0d0d1a;
+--bg-secondary: #1a1a2e;
+--bg-tertiary: #2a2a3e;
+--text-primary: #e0e0e0;
+--text-secondary: #888888;
+--text-input: #ffffff;
+--border: #333333;
+--accent: #90caf9;
+--status-ok: #4caf50;
+--status-due-soon: #ff9800;
+--status-overdue: #f44336;
+--action-primary: #2e7d32;
+--action-danger: #c62828;
 ```
 
 ### Notifications
 
-- Push: Firebase Cloud Messaging via Expo dev client
+- Browser notifications (Notification API) when tasks cross "due soon" or "overdue" thresholds
 - In-app: badge/indicator on motorcycle card and task list items
-- Triggered when hours are updated and tasks cross the "due soon" or "overdue" thresholds
+- Triggered when hours are updated
+
+---
+
+## Landing Page
+
+### Tech: Astro (static site), i18n
+
+Static marketing page with internationalization support. Dark theme matching the web app.
+
+### Structure
+
+```
+landing/
+├── src/
+│   ├── layouts/
+│   │   └── Layout.astro
+│   ├── pages/
+│   │   ├── index.astro              — default language
+│   │   └── [lang]/
+│   │       └── index.astro          — localized pages
+│   ├── components/
+│   │   ├── Hero.astro
+│   │   ├── Features.astro
+│   │   ├── HowItWorks.astro
+│   │   └── Cta.astro
+│   ├── i18n/
+│   │   ├── en.json                  — English translations
+│   │   ├── uk.json                  — Ukrainian translations (add more as needed)
+│   │   └── utils.ts                 — i18n helper (getTranslation, getCurrentLocale)
+│   └── styles/
+│       └── global.css
+├── public/
+│   └── images/
+├── astro.config.mjs
+├── tsconfig.json
+└── package.json
+```
+
+### Sections
+
+1. **Nav** — MTS logo + "Open App" button linking to the web app
+2. **Hero** — headline ("Never Miss a Maintenance Window"), subtitle, "Get Started" CTA, app screenshot
+3. **Features** — 6 cards in 3x2 grid: Hours-Based Tracking, Smart Alerts, Full History, Multi-Bike Garage, Custom Tasks, Responsive
+4. **How It Works** — 3 numbered steps: Add Your Bike → Log Your Hours → Stay on Top
+5. **CTA** — "Ready to Ride?" + Get Started button
+6. **Footer** — minimal, app name
+
+### i18n
+
+- Default language: English
+- Translations stored as JSON files in `src/i18n/`
+- Language switcher in the nav
+- Astro static routing: `/` for English, `/uk/` for Ukrainian, etc.
+- All visible text pulled from translation files, no hardcoded strings in components
+
+### Responsive
+
+- **Desktop** — features 3 columns, how-it-works horizontal
+- **Tablet** — features 2 columns
+- **Mobile** — features 1 column, how-it-works stacked vertical
 
 ---
 
