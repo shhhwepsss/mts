@@ -51,7 +51,7 @@ Maintenance tracking app for enduro motorcycles. Users track engine hours and ge
 | brand        | string              | required, non-empty, max 255       |
 | model        | string              | required, non-empty, max 255       |
 | year         | number              | required, cannot be in the future  |
-| type         | MotorcycleTypeEnum  | required                           |
+| type         | MotorcycleTypeEnum  | required, must be valid enum value  |
 | currentHours | number              | required, ≥ 0                      |
 | imageUrl     | string              | optional                           |
 | createdAt    | Date                |                                    |
@@ -350,7 +350,7 @@ mobile/
 │   │   ├── edit-motorcycle/
 │   │   ├── task-detail/
 │   │   ├── complete-task/
-│   │   ├── maintenance-history/
+│   │   ├── records-history/
 │   │   ├── record-detail/
 │   │   ├── edit-record/
 │   │   └── profile/
@@ -363,10 +363,15 @@ mobile/
 │   ├── features/
 │   │   ├── google-login/       — Google Sign-In flow
 │   │   ├── log-hours/          — update motorcycle hours
+│   │   ├── create-motorcycle/  — create motorcycle
+│   │   ├── edit-motorcycle/    — edit motorcycle details
+│   │   ├── delete-motorcycle/  — delete motorcycle
+│   │   ├── create-task/        — create custom maintenance task
+│   │   ├── edit-task/          — edit task (interval, name, active/inactive)
+│   │   ├── delete-task/        — delete custom task
 │   │   ├── complete-task/      — mark task done with notes/photos
-│   │   ├── manage-task/        — create/edit/delete custom tasks
-│   │   ├── manage-record/      — edit/delete maintenance records
-│   │   └── manage-motorcycle/  — create/edit/delete motorcycle
+│   │   ├── edit-record/        — edit maintenance record
+│   │   └── delete-record/      — delete maintenance record
 │   │
 │   ├── entities/
 │   │   ├── motorcycle/         — type, API, model
