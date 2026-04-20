@@ -5,6 +5,7 @@ import { databaseConfig } from './config/database/database.config';
 import { jwtConfig } from './config/jwt/jwt.config';
 import { googleConfig } from './config/google/google.config';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UserModule } from './modules/user/user.module';
       }),
     }),
     UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

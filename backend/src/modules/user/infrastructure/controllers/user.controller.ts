@@ -1,7 +1,8 @@
-import { Controller, Get, Patch, Body, Req } from '@nestjs/common';
+import { Controller, Get, Patch, Body, Req, UseGuards } from '@nestjs/common';
 import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
 import { GetUserProfileUseCase } from '../../application/use-cases/get-user-profile.use-case';
 import { UpdateUserProfileUseCase } from '../../application/use-cases/update-user-profile.use-case';
+import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
 
 export class UpdateUserDto {
   @IsString()
@@ -11,6 +12,7 @@ export class UpdateUserDto {
 }
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(
     private readonly getUserProfile: GetUserProfileUseCase,
