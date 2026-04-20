@@ -1,0 +1,98 @@
+---
+const features = [
+  {
+    icon: '⏱',
+    title: 'Hours-Based Tracking',
+    description: 'Track maintenance by engine hours — the metric that actually matters for off-road bikes.',
+  },
+  {
+    icon: '🔔',
+    title: 'Smart Alerts',
+    description: 'Get notified when oil changes, chain lube, filter cleanings and more are coming due.',
+  },
+  {
+    icon: '📋',
+    title: 'Full History',
+    description: 'Log every service with notes and photos. Complete maintenance record for every bike.',
+  },
+  {
+    icon: '🏍',
+    title: 'Multi-Bike Garage',
+    description: 'Manage maintenance for all your motorcycles in one place.',
+  },
+  {
+    icon: '⚙️',
+    title: 'Custom Tasks',
+    description: '12 pre-configured enduro tasks plus add your own custom maintenance intervals.',
+  },
+  {
+    icon: '📱',
+    title: 'Responsive',
+    description: 'Works on desktop, tablet, and mobile. Check your bike\'s status anywhere.',
+  },
+];
+---
+
+<section class="features section">
+  <div class="container">
+    <h2 class="section-title">Built for Enduro Riders</h2>
+    <p class="section-subtitle">Everything you need to keep your bike in top shape</p>
+    <div class="features-grid">
+      {features.map((feature) => (
+        <div class="feature-card">
+          <div class="feature-icon">{feature.icon}</div>
+          <h3 class="feature-title">{feature.title}</h3>
+          <p class="feature-description">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .features {
+    background-color: var(--bg-secondary);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .feature-card {
+    background-color: var(--bg-primary);
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+  }
+
+  .feature-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .feature-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .feature-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1023px) {
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
