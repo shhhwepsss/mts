@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from './config/database/database.config';
 import { jwtConfig } from './config/jwt/jwt.config';
 import { googleConfig } from './config/google/google.config';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { googleConfig } from './config/google/google.config';
         synchronize: true, // dev only — use migrations in production
       }),
     }),
+    UserModule,
   ],
 })
 export class AppModule {}
