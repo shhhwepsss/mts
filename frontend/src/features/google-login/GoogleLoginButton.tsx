@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { GoogleLogin, type CredentialResponse } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/app/providers/AuthProvider';
+import { useAuth } from '@/shared/auth';
 
 export function GoogleLoginButton() {
   const { login } = useAuth();

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/app/providers/AuthProvider';
+import { useAuth } from '@/shared/auth';
 import { GoogleLoginButton } from '@/features/google-login';
 import { Spinner } from '@/shared/ui';
 import styles from './LoginPage.module.css';

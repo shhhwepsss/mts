@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userApi } from '@/entities/user';
-import { useAuth } from '@/app/providers/AuthProvider';
+import { useAuth } from '@/shared/auth';
 import { Button, TextInput } from '@/shared/ui';
 import { Header } from '@/widgets/header';
 
