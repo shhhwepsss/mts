@@ -11,7 +11,7 @@ export class MaintenanceTaskOrmEntity {
   @PrimaryColumn('uuid') id: string;
   @Column({ name: 'motorcycle_id', type: 'uuid' }) motorcycleId: string;
   @Column() name: string;
-  @Column({ nullable: true }) description: string | null;
+  @Column({ nullable: true, type: 'varchar' }) description: string | null;
   @Column({ name: 'interval_hours', type: 'decimal', precision: 10, scale: 1 })
   intervalHours: number;
   @Column({
@@ -19,9 +19,9 @@ export class MaintenanceTaskOrmEntity {
     type: 'decimal',
     precision: 10,
     scale: 1,
-    nullable: true,
+    default: 0,
   })
-  lastServicedAtHours: number | null;
+  lastServicedAtHours: number;
   @Column({ name: 'is_default' }) isDefault: boolean;
   @Column({ name: 'is_active' }) isActive: boolean;
   @CreateDateColumn({ name: 'created_at' }) createdAt: Date;

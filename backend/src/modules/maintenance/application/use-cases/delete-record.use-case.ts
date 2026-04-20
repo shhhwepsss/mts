@@ -54,7 +54,7 @@ export class DeleteRecordUseCase {
           recordId,
         );
         task.rollbackLastServiced(
-          previous ? previous.getPerformedAtHours() : null,
+          previous ? previous.getPerformedAtHours() : 0,
         );
         await this.taskRepo.save(task);
       }

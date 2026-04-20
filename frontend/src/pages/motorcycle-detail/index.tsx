@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { motorcycleApi } from '@/entities/motorcycle';
-import { taskApi } from '@/entities/task';
-import { Button, Spinner } from '@/shared/ui';
-import { formatHours } from '@/shared/lib';
-import { Header } from '@/widgets/header';
-import { TaskList } from '@/widgets/task-list';
-import { LogHoursModal } from '@/features/log-hours';
-import styles from './MotorcycleDetail.module.css';
+import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { motorcycleApi } from "@/entities/motorcycle";
+import { taskApi } from "@/entities/task";
+import { Button, Spinner } from "@/shared/ui";
+import { formatHours } from "@/shared/lib";
+import { Header } from "@/widgets/header";
+import { TaskList } from "@/widgets/task-list";
+import { LogHoursModal } from "@/features/log-hours";
+import styles from "./MotorcycleDetail.module.css";
 
 export function MotorcycleDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -17,13 +17,13 @@ export function MotorcycleDetailPage() {
   const [logHoursOpen, setLogHoursOpen] = useState(false);
 
   const motorcycleQuery = useQuery({
-    queryKey: ['motorcycle', id],
+    queryKey: ["motorcycle", id],
     queryFn: () => motorcycleApi.getById(id!),
     enabled: !!id,
   });
 
   const tasksQuery = useQuery({
-    queryKey: ['tasks', id],
+    queryKey: ["tasks", id],
     queryFn: () => taskApi.listByMotorcycle(id!),
     enabled: !!id,
   });
@@ -31,13 +31,13 @@ export function MotorcycleDetailPage() {
   const deleteMutation = useMutation({
     mutationFn: () => motorcycleApi.delete(id!),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['motorcycles'] });
-      navigate('/garage');
+      queryClient.invalidateQueries({ queryKey: ["motorcycles"] });
+      navigate("/garage");
     },
   });
 
   const handleDelete = () => {
-    if (confirm('Delete this motorcycle? This cannot be undone.')) {
+    if (confirm("Delete this motorcycle? This cannot be undone.")) {
       deleteMutation.mutate();
     }
   };
@@ -73,13 +73,22 @@ export function MotorcycleDetailPage() {
           <div>
             <h1 className={styles.title}>{motorcycle.name}</h1>
             <p className={styles.meta}>
-              {motorcycle.brand} {motorcycle.model} · {motorcycle.year} · {motorcycle.type}
+              {motorcycle.brand} {motorcycle.model} · {motorcycle.year} ·{" "}
+              {motorcycle.type}
             </p>
-            <p className={styles.hours}>{formatHours(motorcycle.currentHours)}</p>
+            <p className={styles.hoursTitle}>
+              Current moto hours:{" "}
+              <span className={styles.hours}>
+                {formatHours(motorcycle.currentHours)}
+              </span>
+            </p>
           </div>
           <div className={styles.actions}>
             <Button onClick={() => setLogHoursOpen(true)}>Log Hours</Button>
-            <Button variant="outline" onClick={() => navigate(`/garage/${id}/edit`)}>
+            <Button
+              variant="outline"
+              onClick={() => navigate(`/garage/${id}/edit`)}
+            >
               Edit
             </Button>
             <Button variant="danger" onClick={handleDelete}>

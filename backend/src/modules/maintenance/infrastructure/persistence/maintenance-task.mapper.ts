@@ -9,8 +9,7 @@ export class MaintenanceTaskMapper {
       name: orm.name,
       description: orm.description ?? undefined,
       intervalHours: Number(orm.intervalHours),
-      lastServicedAtHours:
-        orm.lastServicedAtHours !== null ? Number(orm.lastServicedAtHours) : null,
+      lastServicedAtHours: Number(orm.lastServicedAtHours),
       isDefault: orm.isDefault,
       isActive: orm.isActive,
       createdAt: orm.createdAt,

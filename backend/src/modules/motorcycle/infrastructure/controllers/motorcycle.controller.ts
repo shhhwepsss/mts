@@ -106,6 +106,7 @@ export class MotorcycleController {
       year: m.getYear(),
       type: m.getType(),
       currentHours: m.getCurrentHours(),
+      imageUrl: m.getImageUrl(),
     };
   }
 
@@ -124,6 +125,7 @@ export class MotorcycleController {
       year: m.getYear(),
       type: m.getType(),
       currentHours: m.getCurrentHours(),
+      imageUrl: m.getImageUrl(),
     };
   }
 

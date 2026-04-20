@@ -59,7 +59,7 @@ export class CompleteTaskUseCase {
     });
     const savedRecord = await this.recordRepo.save(record);
 
-    task.markServiced(moto.getCurrentHours());
+    task.markServiced(params.performedAtHours);
     await this.taskRepo.save(task);
 
     return savedRecord;

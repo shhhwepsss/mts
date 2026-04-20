@@ -43,6 +43,7 @@ export class CreateCustomTaskUseCase {
       intervalHours: params.intervalHours,
       isDefault: false,
       isActive: true,
+      lastServicedAtHours: 0,
     });
     return this.taskRepo.save(task);
   }

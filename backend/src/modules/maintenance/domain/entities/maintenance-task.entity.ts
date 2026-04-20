@@ -8,7 +8,7 @@ interface MaintenanceTaskProps {
   name: string;
   description?: string;
   intervalHours: number;
-  lastServicedAtHours?: number | null;
+  lastServicedAtHours: number;
   isDefault: boolean;
   isActive: boolean;
   createdAt?: Date;
@@ -20,7 +20,7 @@ export class MaintenanceTask extends BaseEntity {
   private _name: string;
   private _description: string | null;
   private _intervalHours: number;
-  private _lastServicedAtHours: number | null;
+  private _lastServicedAtHours: number;
   private _isDefault: boolean;
   private _isActive: boolean;
 
@@ -36,7 +36,7 @@ export class MaintenanceTask extends BaseEntity {
     this._name = props.name;
     this._description = props.description ?? null;
     this._intervalHours = props.intervalHours;
-    this._lastServicedAtHours = props.lastServicedAtHours ?? null;
+    this._lastServicedAtHours = props.lastServicedAtHours;
     this._isDefault = props.isDefault;
     this._isActive = props.isActive;
   }
@@ -53,7 +53,7 @@ export class MaintenanceTask extends BaseEntity {
   getIntervalHours(): number {
     return this._intervalHours;
   }
-  getLastServicedAtHours(): number | null {
+  getLastServicedAtHours(): number {
     return this._lastServicedAtHours;
   }
   getIsDefault(): boolean {
@@ -68,7 +68,7 @@ export class MaintenanceTask extends BaseEntity {
     this.setUpdatedAt(new Date());
   }
 
-  rollbackLastServiced(previousHours: number | null): void {
+  rollbackLastServiced(previousHours: number): void {
     this._lastServicedAtHours = previousHours;
     this.setUpdatedAt(new Date());
   }

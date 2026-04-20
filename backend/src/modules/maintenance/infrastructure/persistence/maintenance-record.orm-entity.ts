@@ -13,7 +13,7 @@ export class MaintenanceRecordOrmEntity {
   })
   performedAtHours: number;
   @Column({ name: 'performed_at_date', type: 'date' }) performedAtDate: Date;
-  @Column({ nullable: true }) notes: string | null;
+  @Column({ nullable: true, type: 'varchar' }) notes: string | null;
   @Column({ type: 'simple-array', nullable: true }) photos: string[] | null;
   @CreateDateColumn({ name: 'created_at' }) createdAt: Date;
 }

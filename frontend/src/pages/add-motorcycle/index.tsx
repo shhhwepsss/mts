@@ -10,6 +10,7 @@ export function AddMotorcyclePage() {
 
   const mutation = useMutation({
     mutationFn: motorcycleApi.create,
+    meta: { successMessage: 'Motorcycle added' },
     onSuccess: (m) => {
       queryClient.invalidateQueries({ queryKey: ['motorcycles'] });
       navigate(`/garage/${m.id}`);
@@ -27,11 +28,6 @@ export function AddMotorcyclePage() {
           onSubmit={(params) => mutation.mutate(params)}
           onCancel={() => navigate('/garage')}
         />
-        {mutation.isError && (
-          <p style={{ color: 'var(--action-danger)', marginTop: 16 }}>
-            Failed to create motorcycle. Please try again.
-          </p>
-        )}
       </div>
     </>
   );

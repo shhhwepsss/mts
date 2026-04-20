@@ -9,9 +9,11 @@ export function TaskList({ motorcycleId, tasks }: TaskListProps) {
     return <EmptyState message="No tasks yet." />;
   }
 
+  const sortedTasks = [...tasks].sort((a, b) => a.hoursRemaining - b.hoursRemaining);
+
   return (
     <div className={styles.list}>
-      {tasks.map((task) => (
+      {sortedTasks.map((task) => (
         <Link
           key={task.id}
           to={`/garage/${motorcycleId}/tasks/${task.id}`}

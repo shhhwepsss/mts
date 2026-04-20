@@ -32,7 +32,7 @@ export class MotorcycleOrmEntity {
   @Column({ name: 'current_hours', type: 'decimal', precision: 10, scale: 1 })
   currentHours: number;
 
-  @Column({ name: 'image_url', nullable: true })
+  @Column({ name: 'image_url', type: 'varchar', nullable: true })
   imageUrl: string | null;
 
   @CreateDateColumn({ name: 'created_at' })

@@ -26,6 +26,7 @@ export class DefaultTaskFactory {
           name: t.name,
           description: t.description,
           intervalHours: t.intervalHours,
+          lastServicedAtHours: 0,
           isDefault: true,
           isActive: true,
         }),

@@ -1,9 +1,4 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity('google_providers')
 export class GoogleProviderOrmEntity {
@@ -19,7 +14,7 @@ export class GoogleProviderOrmEntity {
   @Column({ name: 'google_email' })
   googleEmail: string;
 
-  @Column({ name: 'google_avatar_url', nullable: true })
+  @Column({ name: 'google_avatar_url', type: 'varchar', nullable: true })
   googleAvatarUrl: string | null;
 
   @CreateDateColumn({ name: 'created_at' })

@@ -7,9 +7,7 @@ import { MaintenanceRecordOrmEntity } from './maintenance-record.orm-entity';
 import { MaintenanceRecordMapper } from './maintenance-record.mapper';
 
 @Injectable()
-export class MaintenanceRecordRepository
-  implements MaintenanceRecordRepositoryPort
-{
+export class MaintenanceRecordRepository implements MaintenanceRecordRepositoryPort {
   constructor(
     @InjectRepository(MaintenanceRecordOrmEntity)
     private readonly repo: Repository<MaintenanceRecordOrmEntity>,
