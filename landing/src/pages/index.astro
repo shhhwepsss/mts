@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Cta from '../components/Cta.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="MTS — Motorcycle Tracking System"
+  description="Track engine hours, get maintenance alerts, and keep a complete service history for your enduro motorcycles."
+>
+  <Nav appUrl="https://app.mts.com" />
+  <main style="padding-top: 60px;">
+    <Hero />
+    <Features />
+    <HowItWorks />
+    <Cta />
+  </main>
+  <Footer />
+</Layout>

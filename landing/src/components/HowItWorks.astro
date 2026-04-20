@@ -1,0 +1,86 @@
+---
+const steps = [
+  {
+    number: 1,
+    title: 'Add Your Bike',
+    description: 'Enter your motorcycle details and current hour meter reading.',
+  },
+  {
+    number: 2,
+    title: 'Log Your Hours',
+    description: 'Update your engine hours after each ride. MTS tracks what\'s due.',
+  },
+  {
+    number: 3,
+    title: 'Stay on Top',
+    description: 'Get alerts before maintenance is due. Mark tasks done with notes and photos.',
+  },
+];
+---
+
+<section class="how-it-works section">
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+    <div class="steps">
+      {steps.map((step) => (
+        <div class="step">
+          <div class="step-number">{step.number}</div>
+          <h3 class="step-title">{step.title}</h3>
+          <p class="step-description">{step.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .how-it-works {
+    background-color: var(--bg-primary);
+  }
+
+  .steps {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .step {
+    flex: 1;
+    text-align: center;
+  }
+
+  .step-number {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--action-primary);
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+  }
+
+  .step-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .step-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 767px) {
+    .steps {
+      flex-direction: column;
+      gap: 32px;
+    }
+  }
+</style>
