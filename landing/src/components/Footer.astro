@@ -1,0 +1,26 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="footer-text">MTS — Motorcycle Tracking System &copy; {year}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    background-color: var(--bg-primary);
+  }
+
+  .footer-inner {
+    text-align: center;
+  }
+
+  .footer-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+</style>
