@@ -1,0 +1,46 @@
+.inner {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.image {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.meta {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.hours {
+  font-size: 14px;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.overdue {
+  font-size: 13px;
+  color: var(--status-overdue);
+}
+
+.dueSoon {
+  font-size: 13px;
+  color: var(--status-due-soon);
+}
