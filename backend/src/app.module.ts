@@ -6,6 +6,8 @@ import { jwtConfig } from './config/jwt/jwt.config';
 import { googleConfig } from './config/google/google.config';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { MotorcycleModule } from './modules/motorcycle/motorcycle.module';
+import { MaintenanceModule } from './modules/maintenance/maintenance.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    MotorcycleModule,
+    MaintenanceModule,
   ],
 })
 export class AppModule {}
