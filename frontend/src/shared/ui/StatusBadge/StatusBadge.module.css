@@ -1,0 +1,16 @@
+.badge {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.OK {
+  color: var(--status-ok);
+}
+
+.DUE_SOON {
+  color: var(--status-due-soon);
+}
+
+.OVERDUE {
+  color: var(--status-overdue);
+}
