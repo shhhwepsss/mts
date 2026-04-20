@@ -1,0 +1,40 @@
+.button {
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.primary {
+  background-color: var(--action-primary);
+  color: #ffffff;
+  border-color: var(--action-primary);
+}
+
+.primary:hover {
+  background-color: var(--action-primary-hover);
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.danger {
+  background-color: transparent;
+  color: var(--action-danger);
+  border-color: var(--action-danger);
+}
+
+.danger:hover {
+  background-color: var(--action-danger);
+  color: #ffffff;
+}

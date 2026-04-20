@@ -1,0 +1,15 @@
+.card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 16px;
+  border-left: 3px solid transparent;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.clickable:hover {
+  background-color: var(--bg-tertiary);
+}
