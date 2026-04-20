@@ -1,5 +1,3 @@
-export const DUE_SOON_THRESHOLD = 2;
-
 export const API_ROUTES = {
   AUTH_GOOGLE: '/auth/google',
   AUTH_REFRESH: '/auth/refresh',

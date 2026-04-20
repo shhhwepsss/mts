@@ -2,13 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { motorcycleApi } from '@/entities/motorcycle';
 import { Button, Modal, TextInput } from '@/shared/ui';
-
-interface LogHoursModalProps {
-  motorcycleId: string;
-  currentHours: number;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import type { LogHoursModalProps } from './type/log-hours-modal.type';
 
 export function LogHoursModal({ motorcycleId, currentHours, isOpen, onClose }: LogHoursModalProps) {
   const queryClient = useQueryClient();

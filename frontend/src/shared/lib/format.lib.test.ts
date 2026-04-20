@@ -1,4 +1,4 @@
-import { formatHours, formatDate, getStatusColor } from './format';
+import { formatHours, formatDate, getStatusColor } from './format.lib';
 
 describe('format utils', () => {
   it('formatHours formats with h suffix', () => {

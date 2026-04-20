@@ -1,8 +1,2 @@
-export type {
-  Task,
-  TaskStatus,
-  CreateTaskParams,
-  UpdateTaskParams,
-  CompleteTaskParams,
-} from './types';
+export type { Task } from './model/task.model';
 export { taskApi } from './api';

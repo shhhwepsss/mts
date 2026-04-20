@@ -1,12 +1,5 @@
-import type { ReactNode } from 'react';
+import type { CardProps } from './type/card.type';
 import styles from './Card.module.css';
-
-interface CardProps {
-  children: ReactNode;
-  borderColor?: string;
-  className?: string;
-  onClick?: () => void;
-}
 
 export function Card({ children, borderColor, className, onClick }: CardProps) {
   return (

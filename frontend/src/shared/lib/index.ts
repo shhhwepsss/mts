@@ -1,1 +1,1 @@
-export { formatHours, formatDate, getStatusColor } from './format';
+export { formatHours, formatDate } from './format.lib';

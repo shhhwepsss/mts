@@ -1,10 +1,6 @@
-import { forwardRef, type InputHTMLAttributes } from 'react';
+import { forwardRef } from 'react';
+import type { TextInputProps } from './type/text-input.type';
 import styles from './TextInput.module.css';
-
-interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-}
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ label, error, className, ...props }, ref) => {

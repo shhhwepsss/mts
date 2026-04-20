@@ -1,13 +1,8 @@
 import { Link } from 'react-router-dom';
-import type { MaintenanceRecord } from '@/entities/record';
 import { Card, EmptyState } from '@/shared/ui';
 import { formatHours, formatDate } from '@/shared/lib';
+import type { RecordListProps } from './type/record-list.type';
 import styles from './RecordList.module.css';
-
-interface RecordListProps {
-  motorcycleId: string;
-  records: MaintenanceRecord[];
-}
 
 export function RecordList({ motorcycleId, records }: RecordListProps) {
   if (records.length === 0) {

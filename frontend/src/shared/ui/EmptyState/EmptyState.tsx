@@ -1,6 +1,4 @@
-interface EmptyStateProps {
-  message: string;
-}
+import type { EmptyStateProps } from './type/empty-state.type';
 
 export function EmptyState({ message }: EmptyStateProps) {
   return (

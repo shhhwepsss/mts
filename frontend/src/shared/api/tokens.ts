@@ -1,5 +1,4 @@
-const ACCESS_TOKEN_KEY = 'mts_access_token';
-const REFRESH_TOKEN_KEY = 'mts_refresh_token';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './const/token-keys';
 
 export function getAccessToken(): string | null {
   return localStorage.getItem(ACCESS_TOKEN_KEY);

@@ -1,13 +1,8 @@
 import { Link } from 'react-router-dom';
-import type { Task } from '@/entities/task';
 import { Card, StatusBadge, EmptyState } from '@/shared/ui';
 import { formatHours } from '@/shared/lib';
+import type { TaskListProps } from './type/task-list.type';
 import styles from './TaskList.module.css';
-
-interface TaskListProps {
-  motorcycleId: string;
-  tasks: Task[];
-}
 
 export function TaskList({ motorcycleId, tasks }: TaskListProps) {
   if (tasks.length === 0) {

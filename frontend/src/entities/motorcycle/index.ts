@@ -2,6 +2,5 @@ export type {
   Motorcycle,
   MotorcycleType,
   CreateMotorcycleParams,
-  UpdateMotorcycleParams,
-} from './types';
+} from './model/motorcycle.model';
 export { motorcycleApi } from './api';

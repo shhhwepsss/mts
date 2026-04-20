@@ -1,9 +1,15 @@
-import { apiClient } from '@/shared/api';
-import { API_ROUTES } from '@/shared/config/constants';
-import type { User } from './types';
+import { apiClient, safeParseApi } from '@/shared/api';
+import { API_ROUTES } from '@/shared/const/api-routes';
+import { UserSchema } from './schema/user.schema';
+import type { User } from './model/user.model';
 
 export const userApi = {
-  getProfile: () => apiClient.get<User>(API_ROUTES.USERS_ME).then((r) => r.data),
-  updateProfile: (name: string) =>
-    apiClient.patch<User>(API_ROUTES.USERS_ME, { name }).then((r) => r.data),
+  getProfile: async (): Promise<User> => {
+    const { data } = await apiClient.get(API_ROUTES.USERS_ME);
+    return safeParseApi(UserSchema, data, 'userApi.getProfile');
+  },
+  updateProfile: async (name: string): Promise<User> => {
+    const { data } = await apiClient.patch(API_ROUTES.USERS_ME, { name });
+    return safeParseApi(UserSchema, data, 'userApi.updateProfile');
+  },
 };

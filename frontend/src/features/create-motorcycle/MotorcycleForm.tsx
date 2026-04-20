@@ -1,21 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { Button, TextInput } from '@/shared/ui';
-import type {
-  CreateMotorcycleParams,
-  Motorcycle,
-  MotorcycleType,
-} from '@/entities/motorcycle';
+import type { MotorcycleType } from '@/entities/motorcycle';
+import type { MotorcycleFormProps } from './type/motorcycle-form.type';
+import { MOTORCYCLE_TYPES } from './const/motorcycle-types';
 import styles from './MotorcycleForm.module.css';
-
-interface MotorcycleFormProps {
-  initialValue?: Motorcycle;
-  submitLabel?: string;
-  isSubmitting?: boolean;
-  onSubmit: (params: CreateMotorcycleParams) => void;
-  onCancel?: () => void;
-}
-
-const TYPES: MotorcycleType[] = ['ENDURO'];
 
 export function MotorcycleForm({
   initialValue,
@@ -99,7 +87,7 @@ export function MotorcycleForm({
             value={type}
             onChange={(e) => setType(e.target.value as MotorcycleType)}
           >
-            {TYPES.map((t) => (
+            {MOTORCYCLE_TYPES.map((t) => (
               <option key={t} value={t}>
                 {t}
               </option>

@@ -1,14 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import type { Motorcycle } from '@/entities/motorcycle';
 import { Card } from '@/shared/ui';
 import { formatHours } from '@/shared/lib';
+import type { MotorcycleCardProps } from './type/motorcycle-card.type';
 import styles from './MotorcycleCard.module.css';
-
-interface MotorcycleCardProps {
-  motorcycle: Motorcycle;
-  overdueCount?: number;
-  dueSoonCount?: number;
-}
 
 export function MotorcycleCard({ motorcycle, overdueCount = 0, dueSoonCount = 0 }: MotorcycleCardProps) {
   const navigate = useNavigate();

@@ -1,15 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { taskApi, type Task } from '@/entities/task';
+import { taskApi } from '@/entities/task';
 import { Button, TextInput } from '@/shared/ui';
-
-interface CompleteTaskFormProps {
-  motorcycleId: string;
-  task: Task;
-  defaultHours: number;
-  onSuccess?: () => void;
-  onCancel?: () => void;
-}
+import type { CompleteTaskFormProps } from './type/complete-task-form.type';
 
 export function CompleteTaskForm({
   motorcycleId,

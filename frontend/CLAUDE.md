@@ -8,10 +8,25 @@ React + Vite SPA for the MTS application.
 
 ## Conventions
 
-### Types
+### Domain entities (Zod)
 
-- Types live inside a `type/` folder within their module.
-- Files use the `.type.ts` extension (e.g. `task.type.ts`).
+- Domain entities are defined as Zod schemas — **not** hand-written TypeScript interfaces.
+- Schemas live in a `schema/` folder and use the `.schema.ts` extension (e.g. `motorcycle.schema.ts`).
+- Inferred types live in a `model/` folder and use the `.model.ts` extension:
+
+  ```ts
+  // model/motorcycle.model.ts
+  import { z } from 'zod';
+  import { MotorcycleSchema } from '../schema/motorcycle.schema';
+  export type Motorcycle = z.infer<typeof MotorcycleSchema>;
+  ```
+
+- API responses must be validated with `Schema.safeParse(...)`. On failure, log the Zod issues with `console.error` and surface/propagate the error — never silently cast.
+
+### Non-domain types
+
+- Non-domain types (component prop interfaces, utility types, etc.) live inside a `type/` folder within their module.
+- Files use the `.type.ts` extension (e.g. `task-list.type.ts`).
 
 ### Functions used inside JSX
 

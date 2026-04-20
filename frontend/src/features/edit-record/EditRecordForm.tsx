@@ -1,14 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { recordApi, type MaintenanceRecord } from '@/entities/record';
+import { recordApi } from '@/entities/record';
 import { Button, TextInput } from '@/shared/ui';
-
-interface EditRecordFormProps {
-  motorcycleId: string;
-  record: MaintenanceRecord;
-  onSuccess?: () => void;
-  onCancel?: () => void;
-}
+import type { EditRecordFormProps } from './type/edit-record-form.type';
 
 export function EditRecordForm({ motorcycleId, record, onSuccess, onCancel }: EditRecordFormProps) {
   const queryClient = useQueryClient();

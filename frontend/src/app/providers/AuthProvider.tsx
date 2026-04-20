@@ -1,14 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { userApi, type User } from '@/entities/user';
 import { apiClient, getAccessToken, clearTokens, setTokens } from '@/shared/api';
-
-interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (googleToken: string) => Promise<void>;
-  logout: () => void;
-}
+import type { AuthContextType } from './type/auth-context.type';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
