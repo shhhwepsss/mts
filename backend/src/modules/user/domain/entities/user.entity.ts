@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { BaseEntity } from '@/shared/domain/base.entity';
-import { ValidationException } from '@/shared/domain/exceptions';
+import { StringValidator } from '@/shared/domain/string-validator';
 
 interface UserProps {
   id: string | null;
@@ -17,9 +17,9 @@ export class User extends BaseEntity {
   private _avatarUrl: string | null;
 
   constructor(props: UserProps) {
+    User.validateName(props.name);
+    User.validateEmail(props.email);
     super(props.id ?? randomUUID(), props.createdAt, props.updatedAt);
-    this.validateName(props.name);
-    this.validateEmail(props.email);
     this._name = props.name;
     this._email = props.email;
     this._avatarUrl = props.avatarUrl ?? null;
@@ -38,30 +38,18 @@ export class User extends BaseEntity {
   }
 
   updateName(name: string): void {
-    this.validateName(name);
+    User.validateName(name);
     this._name = name;
     this.setUpdatedAt(new Date());
   }
 
-  private validateName(name: string): void {
-    if (!name || name.trim().length === 0) {
-      throw new ValidationException('Name must not be empty');
-    }
-    if (name.length > 100) {
-      throw new ValidationException('Name must not exceed 100 characters');
-    }
+  private static validateName(name: string): void {
+    StringValidator.nonEmpty(name, 'Name');
+    StringValidator.maxLength(name, 'Name', 100);
   }
 
-  private validateEmail(email: string): void {
-    if (!email || email.trim().length === 0) {
-      throw new ValidationException('Email must not be empty');
-    }
-    if (email.length > 100) {
-      throw new ValidationException('Email must not exceed 100 characters');
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      throw new ValidationException('Email format is invalid');
-    }
+  private static validateEmail(email: string): void {
+    StringValidator.email(email, 'Email');
+    StringValidator.maxLength(email, 'Email', 100);
   }
 }

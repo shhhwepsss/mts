@@ -1,4 +1,5 @@
-import { IllegalStateException } from '@/shared/domain/exceptions';
+import { ValidationException } from '@/shared/domain/exceptions';
+import { StringValidator } from '@/shared/domain/string-validator';
 
 export abstract class BaseEntity {
   private readonly _id: string;
@@ -6,13 +7,11 @@ export abstract class BaseEntity {
   private _updatedAt: Date;
 
   constructor(id: string, createdAt: Date | null, updatedAt: Date | null) {
-    if (!id || id.trim().length === 0) {
-      throw new IllegalStateException('Entity id must not be empty');
-    }
+    StringValidator.nonEmpty(id, 'Entity id');
     const created = createdAt ?? new Date();
     const updated = updatedAt ?? new Date();
     if (created.getTime() > updated.getTime()) {
-      throw new IllegalStateException('createdAt must not be after updatedAt');
+      throw new ValidationException('createdAt must not be after updatedAt');
     }
     this._id = id;
     this._createdAt = created;

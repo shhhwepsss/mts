@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { BaseEntity } from '@/shared/domain/base.entity';
-import { ValidationException } from '@/shared/domain/exceptions';
+import { StringValidator } from '@/shared/domain/string-validator';
 
 interface GoogleProviderProps {
   id: string | null;
@@ -18,13 +18,14 @@ export class GoogleProvider extends BaseEntity {
   private readonly _googleAvatarUrl: string | null;
 
   constructor(props: GoogleProviderProps) {
+    StringValidator.nonEmpty(props.userId, 'User ID');
+    StringValidator.nonEmpty(props.googleUserId, 'Google user ID');
+    StringValidator.email(props.googleEmail, 'Google email');
+    StringValidator.nullableNonEmpty(
+      props.googleAvatarUrl,
+      'Google avatar URL',
+    );
     super(props.id ?? randomUUID(), props.createdAt, null);
-    if (!props.googleUserId || props.googleUserId.trim().length === 0) {
-      throw new ValidationException('Google user ID must not be empty');
-    }
-    if (!props.googleEmail || props.googleEmail.trim().length === 0) {
-      throw new ValidationException('Google email must not be empty');
-    }
     this._userId = props.userId;
     this._googleUserId = props.googleUserId;
     this._googleEmail = props.googleEmail;

@@ -23,17 +23,12 @@ export class MaintenanceRecord extends BaseEntity {
   private _photos: string[];
 
   constructor(props: MaintenanceRecordProps) {
+    MaintenanceRecord.validatePerformedAtHours(
+      props.performedAtHours,
+      props.currentMotorcycleHours,
+    );
+    MaintenanceRecord.validatePerformedAtDate(props.performedAtDate);
     super(props.id ?? randomUUID(), props.createdAt, null);
-    if (props.performedAtHours > props.currentMotorcycleHours) {
-      throw new ValidationException(
-        'Performed at hours cannot exceed current motorcycle hours',
-      );
-    }
-    const now = new Date();
-    now.setHours(23, 59, 59, 999);
-    if (props.performedAtDate > now) {
-      throw new ValidationException('Performed date must not be in the future');
-    }
     this._taskId = props.taskId;
     this._motorcycleId = props.motorcycleId;
     this._performedAtHours = props.performedAtHours;
@@ -69,24 +64,36 @@ export class MaintenanceRecord extends BaseEntity {
     photos: string[] | null;
   }): void {
     if (props.performedAtHours !== null) {
-      if (props.performedAtHours > props.currentMotorcycleHours) {
-        throw new ValidationException(
-          'Performed at hours cannot exceed current motorcycle hours',
-        );
-      }
+      MaintenanceRecord.validatePerformedAtHours(
+        props.performedAtHours,
+        props.currentMotorcycleHours,
+      );
       this._performedAtHours = props.performedAtHours;
     }
     if (props.performedAtDate !== null) {
-      const now = new Date();
-      now.setHours(23, 59, 59, 999);
-      if (props.performedAtDate > now) {
-        throw new ValidationException(
-          'Performed date must not be in the future',
-        );
-      }
+      MaintenanceRecord.validatePerformedAtDate(props.performedAtDate);
       this._performedAtDate = props.performedAtDate;
     }
     if (props.notes !== null) this._notes = props.notes;
     if (props.photos !== null) this._photos = props.photos;
+  }
+
+  private static validatePerformedAtHours(
+    performedAtHours: number,
+    currentMotorcycleHours: number,
+  ): void {
+    if (performedAtHours > currentMotorcycleHours) {
+      throw new ValidationException(
+        'Performed at hours cannot exceed current motorcycle hours',
+      );
+    }
+  }
+
+  private static validatePerformedAtDate(performedAtDate: Date): void {
+    const now = new Date();
+    now.setHours(23, 59, 59, 999);
+    if (performedAtDate > now) {
+      throw new ValidationException('Performed date must not be in the future');
+    }
   }
 }

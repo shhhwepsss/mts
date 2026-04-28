@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { BaseEntity } from '@/shared/domain/base.entity';
 import { ValidationException } from '@/shared/domain/exceptions';
+import { StringValidator } from '@/shared/domain/string-validator';
 
 interface MaintenanceTaskProps {
   id: string | null;
@@ -25,13 +26,9 @@ export class MaintenanceTask extends BaseEntity {
   private _isActive: boolean;
 
   constructor(props: MaintenanceTaskProps) {
+    MaintenanceTask.validateName(props.name);
+    MaintenanceTask.validateIntervalHours(props.intervalHours);
     super(props.id ?? randomUUID(), props.createdAt, props.updatedAt);
-    if (!props.name || props.name.trim().length === 0) {
-      throw new ValidationException('Task name must not be empty');
-    }
-    if (props.intervalHours <= 0) {
-      throw new ValidationException('Interval hours must be greater than 0');
-    }
     this._motorcycleId = props.motorcycleId;
     this._name = props.name;
     this._description = props.description ?? null;
@@ -80,17 +77,25 @@ export class MaintenanceTask extends BaseEntity {
     isActive: boolean | null;
   }): void {
     if (props.name !== null) {
-      if (props.name.trim().length === 0)
-        throw new ValidationException('Task name must not be empty');
+      MaintenanceTask.validateName(props.name);
       this._name = props.name;
     }
     if (props.description !== null) this._description = props.description;
     if (props.intervalHours !== null) {
-      if (props.intervalHours <= 0)
-        throw new ValidationException('Interval hours must be greater than 0');
+      MaintenanceTask.validateIntervalHours(props.intervalHours);
       this._intervalHours = props.intervalHours;
     }
     if (props.isActive !== null) this._isActive = props.isActive;
     this.setUpdatedAt(new Date());
+  }
+
+  private static validateName(name: string): void {
+    StringValidator.nonEmpty(name, 'Task name');
+  }
+
+  private static validateIntervalHours(intervalHours: number): void {
+    if (intervalHours <= 0) {
+      throw new ValidationException('Interval hours must be greater than 0');
+    }
   }
 }

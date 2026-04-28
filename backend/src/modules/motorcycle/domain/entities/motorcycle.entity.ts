@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { BaseEntity } from '@/shared/domain/base.entity';
 import { ValidationException } from '@/shared/domain/exceptions';
+import { StringValidator } from '@/shared/domain/string-validator';
 import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
 
 interface MotorcycleProps {
@@ -28,14 +29,14 @@ export class Motorcycle extends BaseEntity {
   private _imageUrl: string | null;
 
   constructor(props: MotorcycleProps) {
+    Motorcycle.validateName(props.name);
+    Motorcycle.validateBrand(props.brand);
+    Motorcycle.validateModel(props.model);
+    Motorcycle.validateYear(props.year);
+    Motorcycle.validateType(props.type);
+    Motorcycle.validateHours(props.currentHours);
     super(props.id ?? randomUUID(), props.createdAt, props.updatedAt);
     this._userId = props.userId;
-    this.validateString(props.name, 'Name', 255);
-    this.validateString(props.brand, 'Brand', 255);
-    this.validateString(props.model, 'Model', 255);
-    this.validateYear(props.year);
-    this.validateType(props.type);
-    this.validateHours(props.currentHours);
     this._name = props.name;
     this._brand = props.brand;
     this._model = props.model;
@@ -87,23 +88,23 @@ export class Motorcycle extends BaseEntity {
     imageUrl: string | null;
   }): void {
     if (props.name !== null) {
-      this.validateString(props.name, 'Name', 255);
+      Motorcycle.validateName(props.name);
       this._name = props.name;
     }
     if (props.brand !== null) {
-      this.validateString(props.brand, 'Brand', 255);
+      Motorcycle.validateBrand(props.brand);
       this._brand = props.brand;
     }
     if (props.model !== null) {
-      this.validateString(props.model, 'Model', 255);
+      Motorcycle.validateModel(props.model);
       this._model = props.model;
     }
     if (props.year !== null) {
-      this.validateYear(props.year);
+      Motorcycle.validateYear(props.year);
       this._year = props.year;
     }
     if (props.type !== null) {
-      this.validateType(props.type);
+      Motorcycle.validateType(props.type);
       this._type = props.type;
     }
     if (props.imageUrl !== null) {
@@ -112,34 +113,34 @@ export class Motorcycle extends BaseEntity {
     this.setUpdatedAt(new Date());
   }
 
-  private validateString(
-    value: string,
-    field: string,
-    maxLength: number,
-  ): void {
-    if (!value || value.trim().length === 0) {
-      throw new ValidationException(`${field} must not be empty`);
-    }
-    if (value.length > maxLength) {
-      throw new ValidationException(
-        `${field} must not exceed ${maxLength} characters`,
-      );
-    }
+  private static validateName(name: string): void {
+    StringValidator.nonEmpty(name, 'Name');
+    StringValidator.maxLength(name, 'Name', 255);
   }
 
-  private validateYear(year: number): void {
+  private static validateBrand(brand: string): void {
+    StringValidator.nonEmpty(brand, 'Brand');
+    StringValidator.maxLength(brand, 'Brand', 255);
+  }
+
+  private static validateModel(model: string): void {
+    StringValidator.nonEmpty(model, 'Model');
+    StringValidator.maxLength(model, 'Model', 255);
+  }
+
+  private static validateYear(year: number): void {
     if (year > new Date().getFullYear()) {
       throw new ValidationException('Year cannot be in the future');
     }
   }
 
-  private validateType(type: MotorcycleTypeEnum): void {
+  private static validateType(type: MotorcycleTypeEnum): void {
     if (!Object.values(MotorcycleTypeEnum).includes(type)) {
       throw new ValidationException('Invalid motorcycle type');
     }
   }
 
-  private validateHours(hours: number): void {
+  private static validateHours(hours: number): void {
     if (hours < 0) {
       throw new ValidationException('Current hours must be >= 0');
     }
