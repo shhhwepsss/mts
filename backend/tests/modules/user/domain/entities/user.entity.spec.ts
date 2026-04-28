@@ -24,6 +24,9 @@ describe('User Entity', () => {
     expect(
       () => new User({ ...baseProps, name: '', email: 'john@example.com' }),
     ).toThrow(ValidationException);
+    expect(
+      () => new User({ ...baseProps, name: ' ', email: 'john@example.com' }),
+    ).toThrow(ValidationException);
   });
 
   it('should reject name longer than 100 characters', () => {
@@ -34,19 +37,16 @@ describe('User Entity', () => {
     ).toThrow(ValidationException);
   });
 
-  it('should reject empty email', () => {
+  it('should reject invalid email', () => {
     expect(() => new User({ ...baseProps, name: 'John', email: '' })).toThrow(
       ValidationException,
     );
-  });
-
-  it('should reject invalid email format', () => {
+    expect(() => new User({ ...baseProps, name: 'John', email: ' ' })).toThrow(
+      ValidationException,
+    );
     expect(
       () => new User({ ...baseProps, name: 'John', email: 'not-an-email' }),
     ).toThrow(ValidationException);
-  });
-
-  it('should reject email longer than 100 characters', () => {
     const longEmail = 'a'.repeat(90) + '@example.com';
     expect(
       () => new User({ ...baseProps, name: 'John', email: longEmail }),
@@ -58,9 +58,41 @@ describe('User Entity', () => {
       ...baseProps,
       name: 'John',
       email: 'john@example.com',
-      avatarUrl: 'https://example.com/avatar.jpg',
+      avatarUrl: null,
     });
-    expect(user.getAvatarUrl()).toBe('https://example.com/avatar.jpg');
+    expect(user.getAvatarUrl()).toBe(null);
+  });
+
+  it('should reject invalid avatarUrl', () => {
+    expect(
+      () =>
+        new User({
+          ...baseProps,
+          name: 'John',
+          email: 'john@example.com',
+          avatarUrl: '',
+        }),
+    ).toThrow(ValidationException);
+    expect(
+      () =>
+        new User({
+          ...baseProps,
+          name: 'John',
+          email: 'john@example.com',
+          avatarUrl: ' ',
+        }),
+    ).toThrow(ValidationException);
+  });
+
+  it('should reject updating invalid name', () => {
+    const user = new User({
+      ...baseProps,
+      name: 'John',
+      email: 'john@example.com',
+    });
+    expect(() => user.updateName('')).toThrow(ValidationException);
+    expect(() => user.updateName(' ')).toThrow(ValidationException);
+    expect(() => user.updateName('a'.repeat(101))).toThrow(ValidationException);
   });
 
   it('should update name', () => {
@@ -71,14 +103,5 @@ describe('User Entity', () => {
     });
     user.updateName('Jane');
     expect(user.getName()).toBe('Jane');
-  });
-
-  it('should reject updating to empty name', () => {
-    const user = new User({
-      ...baseProps,
-      name: 'John',
-      email: 'john@example.com',
-    });
-    expect(() => user.updateName('')).toThrow(ValidationException);
   });
 });
