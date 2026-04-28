@@ -1,9 +1,9 @@
-import { Motorcycle } from '../../domain/entities/motorcycle.entity';
-import { MotorcycleTypeEnum } from '../../domain/enums/motorcycle-type.enum';
-import { MotorcycleOrmEntity } from './motorcycle.orm-entity';
+import { Motorcycle } from '@/modules/motorcycle/domain/entities/motorcycle.entity';
+import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
+import { MotorcycleOrmEntity } from '@/modules/motorcycle/infrastructure/persistence/motorcycle.orm-entity';
 
 export class MotorcycleMapper {
-  static toDomain(orm: MotorcycleOrmEntity): Motorcycle {
+  static toDomain(this: void, orm: MotorcycleOrmEntity): Motorcycle {
     return new Motorcycle({
       id: orm.id,
       userId: orm.userId,
@@ -19,7 +19,7 @@ export class MotorcycleMapper {
     });
   }
 
-  static toOrm(domain: Motorcycle): MotorcycleOrmEntity {
+  static toOrm(this: void, domain: Motorcycle): MotorcycleOrmEntity {
     const orm = new MotorcycleOrmEntity();
     orm.id = domain.getId();
     orm.userId = domain.getUserId();

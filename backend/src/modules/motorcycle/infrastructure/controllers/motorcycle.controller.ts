@@ -6,7 +6,6 @@ import {
   Delete,
   Body,
   Param,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -18,14 +17,16 @@ import {
   IsOptional,
   Min,
 } from 'class-validator';
-import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
-import { CreateMotorcycleUseCase } from '../../application/use-cases/create-motorcycle.use-case';
-import { UpdateMotorcycleUseCase } from '../../application/use-cases/update-motorcycle.use-case';
-import { UpdateHoursUseCase } from '../../application/use-cases/update-hours.use-case';
-import { GetMotorcyclesUseCase } from '../../application/use-cases/get-motorcycles.use-case';
-import { GetMotorcycleDetailUseCase } from '../../application/use-cases/get-motorcycle-detail.use-case';
-import { DeleteMotorcycleUseCase } from '../../application/use-cases/delete-motorcycle.use-case';
-import { MotorcycleTypeEnum } from '../../domain/enums/motorcycle-type.enum';
+import { JwtAuthGuard } from '@/modules/auth/infrastructure/guards/jwt-auth.guard';
+import { CurrentUser } from '@/modules/auth/infrastructure/decorators/current-user.decorator';
+import type { AuthenticatedUser } from '@/modules/auth/infrastructure/decorators/authenticated-user.type';
+import { CreateMotorcycleUseCase } from '@/modules/motorcycle/application/use-cases/create-motorcycle.use-case';
+import { UpdateMotorcycleUseCase } from '@/modules/motorcycle/application/use-cases/update-motorcycle.use-case';
+import { UpdateHoursUseCase } from '@/modules/motorcycle/application/use-cases/update-hours.use-case';
+import { GetMotorcyclesUseCase } from '@/modules/motorcycle/application/use-cases/get-motorcycles.use-case';
+import { GetMotorcycleDetailUseCase } from '@/modules/motorcycle/application/use-cases/get-motorcycle-detail.use-case';
+import { DeleteMotorcycleUseCase } from '@/modules/motorcycle/application/use-cases/delete-motorcycle.use-case';
+import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
 
 export class CreateMotorcycleDto {
   @IsString() @IsNotEmpty() @MaxLength(255) name: string;
@@ -63,8 +64,8 @@ export class MotorcycleController {
   ) {}
 
   @Get()
-  async list(@Req() req: any) {
-    const motos = await this.getMotorcycles.execute(req.user.id);
+  async list(@CurrentUser() user: AuthenticatedUser) {
+    const motos = await this.getMotorcycles.execute(user.id);
     return motos.map((m) => ({
       id: m.getId(),
       name: m.getName(),
@@ -78,8 +79,11 @@ export class MotorcycleController {
   }
 
   @Get(':id')
-  async detail(@Req() req: any, @Param('id') id: string) {
-    const m = await this.getMotorcycleDetail.execute(req.user.id, id);
+  async detail(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+  ) {
+    const m = await this.getMotorcycleDetail.execute(user.id, id);
     return {
       id: m.getId(),
       name: m.getName(),
@@ -93,9 +97,12 @@ export class MotorcycleController {
   }
 
   @Post()
-  async create(@Req() req: any, @Body() dto: CreateMotorcycleDto) {
+  async create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: CreateMotorcycleDto,
+  ) {
     const m = await this.createMotorcycle.execute({
-      userId: req.user.id,
+      userId: user.id,
       ...dto,
     });
     return {
@@ -112,11 +119,11 @@ export class MotorcycleController {
 
   @Patch(':id')
   async update(
-    @Req() req: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
     @Body() dto: UpdateMotorcycleDto,
   ) {
-    const m = await this.updateMotorcycle.execute(req.user.id, id, dto);
+    const m = await this.updateMotorcycle.execute(user.id, id, dto);
     return {
       id: m.getId(),
       name: m.getName(),
@@ -131,17 +138,20 @@ export class MotorcycleController {
 
   @Patch(':id/hours')
   async logHours(
-    @Req() req: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
     @Body() dto: UpdateHoursDto,
   ) {
-    const m = await this.updateHours.execute(req.user.id, id, dto.currentHours);
+    const m = await this.updateHours.execute(user.id, id, dto.currentHours);
     return { id: m.getId(), currentHours: m.getCurrentHours() };
   }
 
   @Delete(':id')
-  async remove(@Req() req: any, @Param('id') id: string) {
-    await this.deleteMotorcycle.execute(req.user.id, id);
+  async remove(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+  ) {
+    await this.deleteMotorcycle.execute(user.id, id);
     return { deleted: true };
   }
 }

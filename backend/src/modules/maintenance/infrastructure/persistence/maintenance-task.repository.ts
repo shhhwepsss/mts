@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MaintenanceTaskRepositoryPort } from '../../domain/ports/maintenance-task-repository.port';
-import { MaintenanceTask } from '../../domain/entities/maintenance-task.entity';
-import { MaintenanceTaskOrmEntity } from './maintenance-task.orm-entity';
-import { MaintenanceTaskMapper } from './maintenance-task.mapper';
+import { MaintenanceTaskRepositoryPort } from '@/modules/maintenance/domain/ports/maintenance-task-repository.port';
+import { MaintenanceTask } from '@/modules/maintenance/domain/entities/maintenance-task.entity';
+import { MaintenanceTaskOrmEntity } from '@/modules/maintenance/infrastructure/persistence/maintenance-task.orm-entity';
+import { MaintenanceTaskMapper } from '@/modules/maintenance/infrastructure/persistence/maintenance-task.mapper';
 
 @Injectable()
-export class MaintenanceTaskRepository
-  implements MaintenanceTaskRepositoryPort
-{
+export class MaintenanceTaskRepository implements MaintenanceTaskRepositoryPort {
   constructor(
     @InjectRepository(MaintenanceTaskOrmEntity)
     private readonly repo: Repository<MaintenanceTaskOrmEntity>,

@@ -1,5 +1,5 @@
-import { GoogleProvider } from '../../domain/entities/google-provider.entity';
-import { GoogleProviderOrmEntity } from './google-provider.orm-entity';
+import { GoogleProvider } from '@/modules/auth/domain/entities/google-provider.entity';
+import { GoogleProviderOrmEntity } from '@/modules/auth/infrastructure/persistence/google-provider.orm-entity';
 
 export class GoogleProviderMapper {
   static toDomain(orm: GoogleProviderOrmEntity): GoogleProvider {

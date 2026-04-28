@@ -2,10 +2,10 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   MAINTENANCE_TASK_REPOSITORY,
   type MaintenanceTaskRepositoryPort,
-} from '../ports/maintenance-task-repository.port';
-import { MaintenanceTask } from '../entities/maintenance-task.entity';
-import { DEFAULT_TASKS } from '../constants/default-tasks.constants';
-import { MotorcycleTypeEnum } from '../../../motorcycle/domain/enums/motorcycle-type.enum';
+} from '@/modules/maintenance/domain/ports/maintenance-task-repository.port';
+import { MaintenanceTask } from '@/modules/maintenance/domain/entities/maintenance-task.entity';
+import { DEFAULT_TASKS } from '@/modules/maintenance/domain/constants/default-tasks.constants';
+import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
 
 @Injectable()
 export class DefaultTaskFactory {

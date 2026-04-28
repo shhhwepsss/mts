@@ -1,11 +1,12 @@
-import { MaintenanceTask } from '../../../../../src/modules/maintenance/domain/entities/maintenance-task.entity';
-import { ValidationException } from '../../../../../src/shared/domain/exceptions';
+import { MaintenanceTask } from '@/modules/maintenance/domain/entities/maintenance-task.entity';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 describe('MaintenanceTask Entity', () => {
   const validProps = {
     motorcycleId: '123',
     name: 'Oil Change',
     intervalHours: 15,
+    lastServicedAtHours: 0,
     isDefault: true,
     isActive: true,
   };
@@ -14,7 +15,7 @@ describe('MaintenanceTask Entity', () => {
     const task = new MaintenanceTask(validProps);
     expect(task.getName()).toBe('Oil Change');
     expect(task.getIntervalHours()).toBe(15);
-    expect(task.getLastServicedAtHours()).toBeNull();
+    expect(task.getLastServicedAtHours()).toBe(0);
   });
 
   it('should reject empty name', () => {
@@ -32,9 +33,9 @@ describe('MaintenanceTask Entity', () => {
     ).toThrow(ValidationException);
   });
 
-  it('should allow null lastServicedAtHours', () => {
+  it('should default lastServicedAtHours to 0 for fresh tasks', () => {
     const task = new MaintenanceTask(validProps);
-    expect(task.getLastServicedAtHours()).toBeNull();
+    expect(task.getLastServicedAtHours()).toBe(0);
   });
 
   it('should update lastServicedAtHours', () => {

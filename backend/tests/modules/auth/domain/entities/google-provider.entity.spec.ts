@@ -1,5 +1,5 @@
-import { GoogleProvider } from '../../../../../src/modules/auth/domain/entities/google-provider.entity';
-import { ValidationException } from '../../../../../src/shared/domain/exceptions';
+import { GoogleProvider } from '@/modules/auth/domain/entities/google-provider.entity';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 describe('GoogleProvider Entity', () => {
   it('should create a valid google provider', () => {

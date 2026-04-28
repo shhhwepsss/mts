@@ -1,4 +1,4 @@
-import { Motorcycle } from '../entities/motorcycle.entity';
+import { Motorcycle } from '@/modules/motorcycle/domain/entities/motorcycle.entity';
 
 export const MOTORCYCLE_REPOSITORY = Symbol('MOTORCYCLE_REPOSITORY');
 

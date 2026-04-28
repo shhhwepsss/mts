@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MotorcycleRepositoryPort } from '../../domain/ports/motorcycle-repository.port';
-import { Motorcycle } from '../../domain/entities/motorcycle.entity';
-import { MotorcycleOrmEntity } from './motorcycle.orm-entity';
-import { MotorcycleMapper } from './motorcycle.mapper';
+import { MotorcycleRepositoryPort } from '@/modules/motorcycle/domain/ports/motorcycle-repository.port';
+import { Motorcycle } from '@/modules/motorcycle/domain/entities/motorcycle.entity';
+import { MotorcycleOrmEntity } from '@/modules/motorcycle/infrastructure/persistence/motorcycle.orm-entity';
+import { MotorcycleMapper } from '@/modules/motorcycle/infrastructure/persistence/motorcycle.mapper';
 
 @Injectable()
 export class MotorcycleRepository implements MotorcycleRepositoryPort {

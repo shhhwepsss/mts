@@ -1,6 +1,6 @@
-import { Motorcycle } from '../../../../../src/modules/motorcycle/domain/entities/motorcycle.entity';
-import { MotorcycleTypeEnum } from '../../../../../src/modules/motorcycle/domain/enums/motorcycle-type.enum';
-import { ValidationException } from '../../../../../src/shared/domain/exceptions';
+import { Motorcycle } from '@/modules/motorcycle/domain/entities/motorcycle.entity';
+import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 describe('Motorcycle Entity', () => {
   const validProps = {
@@ -58,7 +58,11 @@ describe('Motorcycle Entity', () => {
 
   it('should reject invalid type', () => {
     expect(
-      () => new Motorcycle({ ...validProps, type: 'INVALID' as any }),
+      () =>
+        new Motorcycle({
+          ...validProps,
+          type: 'INVALID' as unknown as MotorcycleTypeEnum,
+        }),
     ).toThrow(ValidationException);
   });
 

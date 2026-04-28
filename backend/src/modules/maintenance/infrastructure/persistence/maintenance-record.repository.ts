@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MaintenanceRecordRepositoryPort } from '../../domain/ports/maintenance-record-repository.port';
-import { MaintenanceRecord } from '../../domain/entities/maintenance-record.entity';
-import { MaintenanceRecordOrmEntity } from './maintenance-record.orm-entity';
-import { MaintenanceRecordMapper } from './maintenance-record.mapper';
+import { MaintenanceRecordRepositoryPort } from '@/modules/maintenance/domain/ports/maintenance-record-repository.port';
+import { MaintenanceRecord } from '@/modules/maintenance/domain/entities/maintenance-record.entity';
+import { MaintenanceRecordOrmEntity } from '@/modules/maintenance/infrastructure/persistence/maintenance-record.orm-entity';
+import { MaintenanceRecordMapper } from '@/modules/maintenance/infrastructure/persistence/maintenance-record.mapper';
 
 @Injectable()
 export class MaintenanceRecordRepository implements MaintenanceRecordRepositoryPort {

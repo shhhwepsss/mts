@@ -10,7 +10,7 @@ import {
   ValidationException,
   NotFoundException,
   ForbiddenException,
-} from '../../domain/exceptions';
+} from '@/shared/domain/exceptions';
 
 @Catch(DomainException)
 export class DomainExceptionFilter implements ExceptionFilter {

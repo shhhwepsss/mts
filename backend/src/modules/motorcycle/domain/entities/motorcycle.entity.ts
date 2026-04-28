@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
-import { BaseEntity } from '../../../../shared/domain/base.entity';
-import { ValidationException } from '../../../../shared/domain/exceptions';
-import { MotorcycleTypeEnum } from '../enums/motorcycle-type.enum';
+import { BaseEntity } from '@/shared/domain/base.entity';
+import { ValidationException } from '@/shared/domain/exceptions';
+import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
 
 interface MotorcycleProps {
   id?: string;
@@ -112,7 +112,11 @@ export class Motorcycle extends BaseEntity {
     this.setUpdatedAt(new Date());
   }
 
-  private validateString(value: string, field: string, maxLength: number): void {
+  private validateString(
+    value: string,
+    field: string,
+    maxLength: number,
+  ): void {
     if (!value || value.trim().length === 0) {
       throw new ValidationException(`${field} must not be empty`);
     }

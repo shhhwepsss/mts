@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GoogleProviderRepositoryPort } from '../../domain/ports/google-provider-repository.port';
-import { GoogleProvider } from '../../domain/entities/google-provider.entity';
-import { GoogleProviderOrmEntity } from './google-provider.orm-entity';
-import { GoogleProviderMapper } from './google-provider.mapper';
+import { GoogleProviderRepositoryPort } from '@/modules/auth/domain/ports/google-provider-repository.port';
+import { GoogleProvider } from '@/modules/auth/domain/entities/google-provider.entity';
+import { GoogleProviderOrmEntity } from '@/modules/auth/infrastructure/persistence/google-provider.orm-entity';
+import { GoogleProviderMapper } from '@/modules/auth/infrastructure/persistence/google-provider.mapper';
 
 @Injectable()
 export class GoogleProviderRepository implements GoogleProviderRepositoryPort {

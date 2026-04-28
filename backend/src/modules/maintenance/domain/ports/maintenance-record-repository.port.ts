@@ -1,4 +1,4 @@
-import { MaintenanceRecord } from '../entities/maintenance-record.entity';
+import { MaintenanceRecord } from '@/modules/maintenance/domain/entities/maintenance-record.entity';
 
 export const MAINTENANCE_RECORD_REPOSITORY = Symbol(
   'MAINTENANCE_RECORD_REPOSITORY',

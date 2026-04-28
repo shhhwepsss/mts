@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
-import { BaseEntity } from '../../../../shared/domain/base.entity';
-import { ValidationException } from '../../../../shared/domain/exceptions';
+import { BaseEntity } from '@/shared/domain/base.entity';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 interface MaintenanceRecordProps {
   id?: string;
@@ -32,9 +32,7 @@ export class MaintenanceRecord extends BaseEntity {
     const now = new Date();
     now.setHours(23, 59, 59, 999);
     if (props.performedAtDate > now) {
-      throw new ValidationException(
-        'Performed date must not be in the future',
-      );
+      throw new ValidationException('Performed date must not be in the future');
     }
     this._taskId = props.taskId;
     this._motorcycleId = props.motorcycleId;

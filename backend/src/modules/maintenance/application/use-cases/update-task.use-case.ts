@@ -2,16 +2,16 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   MAINTENANCE_TASK_REPOSITORY,
   type MaintenanceTaskRepositoryPort,
-} from '../../domain/ports/maintenance-task-repository.port';
+} from '@/modules/maintenance/domain/ports/maintenance-task-repository.port';
 import {
   MOTORCYCLE_REPOSITORY,
   type MotorcycleRepositoryPort,
-} from '../../../motorcycle/domain/ports/motorcycle-repository.port';
-import { MaintenanceTask } from '../../domain/entities/maintenance-task.entity';
+} from '@/modules/motorcycle/domain/ports/motorcycle-repository.port';
+import { MaintenanceTask } from '@/modules/maintenance/domain/entities/maintenance-task.entity';
 import {
   NotFoundException,
   ForbiddenException,
-} from '../../../../shared/domain/exceptions';
+} from '@/shared/domain/exceptions';
 
 @Injectable()
 export class UpdateTaskUseCase {

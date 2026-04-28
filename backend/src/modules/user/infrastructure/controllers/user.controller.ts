@@ -1,8 +1,10 @@
-import { Controller, Get, Patch, Body, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Patch, Body, UseGuards } from '@nestjs/common';
 import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
-import { GetUserProfileUseCase } from '../../application/use-cases/get-user-profile.use-case';
-import { UpdateUserProfileUseCase } from '../../application/use-cases/update-user-profile.use-case';
-import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
+import { GetUserProfileUseCase } from '@/modules/user/application/use-cases/get-user-profile.use-case';
+import { UpdateUserProfileUseCase } from '@/modules/user/application/use-cases/update-user-profile.use-case';
+import { JwtAuthGuard } from '@/modules/auth/infrastructure/guards/jwt-auth.guard';
+import { CurrentUser } from '@/modules/auth/infrastructure/decorators/current-user.decorator';
+import type { AuthenticatedUser } from '@/modules/auth/infrastructure/decorators/authenticated-user.type';
 
 export class UpdateUserDto {
   @IsString()
@@ -20,8 +22,8 @@ export class UserController {
   ) {}
 
   @Get('me')
-  async getProfile(@Req() req: any) {
-    const user = await this.getUserProfile.execute(req.user.id);
+  async getProfile(@CurrentUser() current: AuthenticatedUser) {
+    const user = await this.getUserProfile.execute(current.id);
     return {
       id: user.getId(),
       name: user.getName(),
@@ -31,8 +33,11 @@ export class UserController {
   }
 
   @Patch('me')
-  async updateProfile(@Req() req: any, @Body() dto: UpdateUserDto) {
-    const user = await this.updateUserProfile.execute(req.user.id, dto.name);
+  async updateProfile(
+    @CurrentUser() current: AuthenticatedUser,
+    @Body() dto: UpdateUserDto,
+  ) {
+    const user = await this.updateUserProfile.execute(current.id, dto.name);
     return {
       id: user.getId(),
       name: user.getName(),

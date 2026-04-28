@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { JwtTokenService, TokenPair } from '../services/jwt-token.service';
-import { ValidationException } from '../../../../shared/domain/exceptions';
+import {
+  JwtTokenService,
+  TokenPair,
+} from '@/modules/auth/application/services/jwt-token.service';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 @Injectable()
 export class RefreshTokenUseCase {

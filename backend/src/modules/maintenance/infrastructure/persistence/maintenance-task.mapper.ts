@@ -1,8 +1,8 @@
-import { MaintenanceTask } from '../../domain/entities/maintenance-task.entity';
-import { MaintenanceTaskOrmEntity } from './maintenance-task.orm-entity';
+import { MaintenanceTask } from '@/modules/maintenance/domain/entities/maintenance-task.entity';
+import { MaintenanceTaskOrmEntity } from '@/modules/maintenance/infrastructure/persistence/maintenance-task.orm-entity';
 
 export class MaintenanceTaskMapper {
-  static toDomain(orm: MaintenanceTaskOrmEntity): MaintenanceTask {
+  static toDomain(this: void, orm: MaintenanceTaskOrmEntity): MaintenanceTask {
     return new MaintenanceTask({
       id: orm.id,
       motorcycleId: orm.motorcycleId,
@@ -17,7 +17,7 @@ export class MaintenanceTaskMapper {
     });
   }
 
-  static toOrm(domain: MaintenanceTask): MaintenanceTaskOrmEntity {
+  static toOrm(this: void, domain: MaintenanceTask): MaintenanceTaskOrmEntity {
     const orm = new MaintenanceTaskOrmEntity();
     orm.id = domain.getId();
     orm.motorcycleId = domain.getMotorcycleId();

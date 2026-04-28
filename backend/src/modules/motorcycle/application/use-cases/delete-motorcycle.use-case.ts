@@ -2,11 +2,11 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   MOTORCYCLE_REPOSITORY,
   type MotorcycleRepositoryPort,
-} from '../../domain/ports/motorcycle-repository.port';
+} from '@/modules/motorcycle/domain/ports/motorcycle-repository.port';
 import {
   NotFoundException,
   ForbiddenException,
-} from '../../../../shared/domain/exceptions';
+} from '@/shared/domain/exceptions';
 
 @Injectable()
 export class DeleteMotorcycleUseCase {

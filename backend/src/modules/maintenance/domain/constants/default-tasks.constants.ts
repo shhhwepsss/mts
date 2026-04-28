@@ -1,4 +1,4 @@
-import { MotorcycleTypeEnum } from '../../../motorcycle/domain/enums/motorcycle-type.enum';
+import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
 
 interface DefaultTaskTemplate {
   name: string;

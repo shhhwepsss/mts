@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../../src/shared/domain/base.entity';
+import { BaseEntity } from '@/shared/domain/base.entity';
 
 class TestEntity extends BaseEntity {
   constructor(id: string, createdAt?: Date, updatedAt?: Date) {
@@ -29,8 +29,9 @@ describe('BaseEntity', () => {
 
   it('should not expose fields directly', () => {
     const entity = new TestEntity('some-id');
-    expect((entity as any).id).toBeUndefined();
-    expect((entity as any).createdAt).toBeUndefined();
-    expect((entity as any).updatedAt).toBeUndefined();
+    const fields = entity as unknown as Record<string, unknown>;
+    expect(fields.id).toBeUndefined();
+    expect(fields.createdAt).toBeUndefined();
+    expect(fields.updatedAt).toBeUndefined();
   });
 });

@@ -1,6 +1,8 @@
-import { MaintenanceTask } from '../entities/maintenance-task.entity';
+import { MaintenanceTask } from '@/modules/maintenance/domain/entities/maintenance-task.entity';
 
-export const MAINTENANCE_TASK_REPOSITORY = Symbol('MAINTENANCE_TASK_REPOSITORY');
+export const MAINTENANCE_TASK_REPOSITORY = Symbol(
+  'MAINTENANCE_TASK_REPOSITORY',
+);
 
 export interface MaintenanceTaskRepositoryPort {
   findById(id: string): Promise<MaintenanceTask | null>;

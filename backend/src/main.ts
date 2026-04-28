@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
-import { AppModule } from './app.module';
-import { DomainExceptionFilter } from './shared/infrastructure/filters/domain-exception.filter';
+import { AppModule } from '@/app.module';
+import { DomainExceptionFilter } from '@/shared/infrastructure/filters/domain-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -23,4 +23,4 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
   logger.log(`Application started on port ${port}`);
 }
-bootstrap();
+void bootstrap();

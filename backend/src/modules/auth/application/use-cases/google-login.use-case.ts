@@ -4,15 +4,18 @@ import { ConfigService } from '@nestjs/config';
 import {
   GOOGLE_PROVIDER_REPOSITORY,
   type GoogleProviderRepositoryPort,
-} from '../../domain/ports/google-provider-repository.port';
+} from '@/modules/auth/domain/ports/google-provider-repository.port';
 import {
   USER_REPOSITORY,
   type UserRepositoryPort,
-} from '../../../user/domain/ports/user-repository.port';
-import { GoogleProvider } from '../../domain/entities/google-provider.entity';
-import { User } from '../../../user/domain/entities/user.entity';
-import { JwtTokenService, TokenPair } from '../services/jwt-token.service';
-import { ValidationException } from '../../../../shared/domain/exceptions';
+} from '@/modules/user/domain/ports/user-repository.port';
+import { GoogleProvider } from '@/modules/auth/domain/entities/google-provider.entity';
+import { User } from '@/modules/user/domain/entities/user.entity';
+import {
+  JwtTokenService,
+  TokenPair,
+} from '@/modules/auth/application/services/jwt-token.service';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 @Injectable()
 export class GoogleLoginUseCase {

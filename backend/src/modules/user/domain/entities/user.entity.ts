@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
-import { BaseEntity } from '../../../../shared/domain/base.entity';
-import { ValidationException } from '../../../../shared/domain/exceptions';
+import { BaseEntity } from '@/shared/domain/base.entity';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 interface UserProps {
   id?: string;

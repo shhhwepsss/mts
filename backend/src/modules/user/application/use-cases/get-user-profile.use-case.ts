@@ -2,9 +2,9 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   USER_REPOSITORY,
   type UserRepositoryPort,
-} from '../../domain/ports/user-repository.port';
-import { NotFoundException } from '../../../../shared/domain/exceptions';
-import { User } from '../../domain/entities/user.entity';
+} from '@/modules/user/domain/ports/user-repository.port';
+import { NotFoundException } from '@/shared/domain/exceptions';
+import { User } from '@/modules/user/domain/entities/user.entity';
 
 @Injectable()
 export class GetUserProfileUseCase {

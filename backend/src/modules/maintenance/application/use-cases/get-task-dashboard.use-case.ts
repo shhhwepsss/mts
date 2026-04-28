@@ -2,19 +2,19 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   MAINTENANCE_TASK_REPOSITORY,
   type MaintenanceTaskRepositoryPort,
-} from '../../domain/ports/maintenance-task-repository.port';
+} from '@/modules/maintenance/domain/ports/maintenance-task-repository.port';
 import {
   MOTORCYCLE_REPOSITORY,
   type MotorcycleRepositoryPort,
-} from '../../../motorcycle/domain/ports/motorcycle-repository.port';
+} from '@/modules/motorcycle/domain/ports/motorcycle-repository.port';
 import {
   MaintenanceCalculator,
   TaskWithStatus,
-} from '../../domain/services/maintenance-calculator.service';
+} from '@/modules/maintenance/domain/services/maintenance-calculator.service';
 import {
   NotFoundException,
   ForbiddenException,
-} from '../../../../shared/domain/exceptions';
+} from '@/shared/domain/exceptions';
 
 @Injectable()
 export class GetTaskDashboardUseCase {

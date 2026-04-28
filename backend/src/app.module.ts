@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { databaseConfig } from './config/database/database.config';
-import { jwtConfig } from './config/jwt/jwt.config';
-import { googleConfig } from './config/google/google.config';
-import { UserModule } from './modules/user/user.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { MotorcycleModule } from './modules/motorcycle/motorcycle.module';
-import { MaintenanceModule } from './modules/maintenance/maintenance.module';
-import { NotificationModule } from './modules/notification/notification.module';
+import { databaseConfig } from '@/config/database/database.config';
+import { jwtConfig } from '@/config/jwt/jwt.config';
+import { googleConfig } from '@/config/google/google.config';
+import { UserModule } from '@/modules/user/user.module';
+import { AuthModule } from '@/modules/auth/auth.module';
+import { MotorcycleModule } from '@/modules/motorcycle/motorcycle.module';
+import { MaintenanceModule } from '@/modules/maintenance/maintenance.module';
+import { NotificationModule } from '@/modules/notification/notification.module';
 
 @Module({
   imports: [

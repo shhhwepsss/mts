@@ -6,7 +6,6 @@ import {
   Body,
   Param,
   Query,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -16,11 +15,13 @@ import {
   IsDateString,
   IsArray,
 } from 'class-validator';
-import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
-import { GetRecordsUseCase } from '../../application/use-cases/get-records.use-case';
-import { GetRecordDetailUseCase } from '../../application/use-cases/get-record-detail.use-case';
-import { EditRecordUseCase } from '../../application/use-cases/edit-record.use-case';
-import { DeleteRecordUseCase } from '../../application/use-cases/delete-record.use-case';
+import { JwtAuthGuard } from '@/modules/auth/infrastructure/guards/jwt-auth.guard';
+import { CurrentUser } from '@/modules/auth/infrastructure/decorators/current-user.decorator';
+import type { AuthenticatedUser } from '@/modules/auth/infrastructure/decorators/authenticated-user.type';
+import { GetRecordsUseCase } from '@/modules/maintenance/application/use-cases/get-records.use-case';
+import { GetRecordDetailUseCase } from '@/modules/maintenance/application/use-cases/get-record-detail.use-case';
+import { EditRecordUseCase } from '@/modules/maintenance/application/use-cases/edit-record.use-case';
+import { DeleteRecordUseCase } from '@/modules/maintenance/application/use-cases/delete-record.use-case';
 
 export class EditRecordDto {
   @IsOptional() @IsNumber() performedAtHours?: number;
@@ -41,7 +42,7 @@ export class MaintenanceRecordController {
 
   @Get()
   async list(
-    @Req() req: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Param('motorcycleId') motorcycleId: string,
     @Query('taskId') taskId?: string,
     @Query('page') page?: string,
@@ -50,7 +51,7 @@ export class MaintenanceRecordController {
     const pageNum = page ? parseInt(page, 10) : 1;
     const limitNum = limit ? parseInt(limit, 10) : 20;
     const { records, total } = await this.getRecords.execute(
-      req.user.id,
+      user.id,
       motorcycleId,
       taskId,
       pageNum,
@@ -73,12 +74,12 @@ export class MaintenanceRecordController {
 
   @Get(':recordId')
   async detail(
-    @Req() req: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Param('motorcycleId') motorcycleId: string,
     @Param('recordId') recordId: string,
   ) {
     const r = await this.getRecordDetail.execute(
-      req.user.id,
+      user.id,
       motorcycleId,
       recordId,
     );
@@ -94,24 +95,19 @@ export class MaintenanceRecordController {
 
   @Patch(':recordId')
   async edit(
-    @Req() req: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Param('motorcycleId') motorcycleId: string,
     @Param('recordId') recordId: string,
     @Body() dto: EditRecordDto,
   ) {
-    const r = await this.editRecord.execute(
-      req.user.id,
-      motorcycleId,
-      recordId,
-      {
-        performedAtHours: dto.performedAtHours,
-        performedAtDate: dto.performedAtDate
-          ? new Date(dto.performedAtDate)
-          : undefined,
-        notes: dto.notes,
-        photos: dto.photos,
-      },
-    );
+    const r = await this.editRecord.execute(user.id, motorcycleId, recordId, {
+      performedAtHours: dto.performedAtHours,
+      performedAtDate: dto.performedAtDate
+        ? new Date(dto.performedAtDate)
+        : undefined,
+      notes: dto.notes,
+      photos: dto.photos,
+    });
     return {
       id: r.getId(),
       performedAtHours: r.getPerformedAtHours(),
@@ -123,11 +119,11 @@ export class MaintenanceRecordController {
 
   @Delete(':recordId')
   async remove(
-    @Req() req: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Param('motorcycleId') motorcycleId: string,
     @Param('recordId') recordId: string,
   ) {
-    await this.deleteRecord.execute(req.user.id, motorcycleId, recordId);
+    await this.deleteRecord.execute(user.id, motorcycleId, recordId);
     return { deleted: true };
   }
 }

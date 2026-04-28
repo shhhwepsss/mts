@@ -2,13 +2,13 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   MOTORCYCLE_REPOSITORY,
   type MotorcycleRepositoryPort,
-} from '../../domain/ports/motorcycle-repository.port';
+} from '@/modules/motorcycle/domain/ports/motorcycle-repository.port';
 import {
   NotFoundException,
   ForbiddenException,
-} from '../../../../shared/domain/exceptions';
-import { Motorcycle } from '../../domain/entities/motorcycle.entity';
-import { MotorcycleTypeEnum } from '../../domain/enums/motorcycle-type.enum';
+} from '@/shared/domain/exceptions';
+import { Motorcycle } from '@/modules/motorcycle/domain/entities/motorcycle.entity';
+import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
 
 @Injectable()
 export class UpdateMotorcycleUseCase {

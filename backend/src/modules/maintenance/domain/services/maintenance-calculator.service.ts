@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { MaintenanceTask } from '../entities/maintenance-task.entity';
-import { TaskStatus } from '../value-objects/task-status.vo';
+import { MaintenanceTask } from '@/modules/maintenance/domain/entities/maintenance-task.entity';
+import { TaskStatus } from '@/modules/maintenance/domain/value-objects/task-status.vo';
 
 export interface TaskWithStatus {
   task: MaintenanceTask;

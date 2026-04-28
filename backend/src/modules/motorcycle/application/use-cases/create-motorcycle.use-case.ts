@@ -2,10 +2,10 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   MOTORCYCLE_REPOSITORY,
   type MotorcycleRepositoryPort,
-} from '../../domain/ports/motorcycle-repository.port';
-import { Motorcycle } from '../../domain/entities/motorcycle.entity';
-import { MotorcycleTypeEnum } from '../../domain/enums/motorcycle-type.enum';
-import { DefaultTaskFactory } from '../../../maintenance/domain/services/default-task-factory.service';
+} from '@/modules/motorcycle/domain/ports/motorcycle-repository.port';
+import { Motorcycle } from '@/modules/motorcycle/domain/entities/motorcycle.entity';
+import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
+import { DefaultTaskFactory } from '@/modules/maintenance/domain/services/default-task-factory.service';
 
 @Injectable()
 export class CreateMotorcycleUseCase {

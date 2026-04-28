@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { IsString, IsNotEmpty } from 'class-validator';
-import { GoogleLoginUseCase } from '../../application/use-cases/google-login.use-case';
-import { RefreshTokenUseCase } from '../../application/use-cases/refresh-token.use-case';
+import { GoogleLoginUseCase } from '@/modules/auth/application/use-cases/google-login.use-case';
+import { RefreshTokenUseCase } from '@/modules/auth/application/use-cases/refresh-token.use-case';
 
 export class GoogleLoginDto {
   @IsString()

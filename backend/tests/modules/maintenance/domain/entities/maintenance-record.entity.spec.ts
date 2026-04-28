@@ -1,5 +1,5 @@
-import { MaintenanceRecord } from '../../../../../src/modules/maintenance/domain/entities/maintenance-record.entity';
-import { ValidationException } from '../../../../../src/shared/domain/exceptions';
+import { MaintenanceRecord } from '@/modules/maintenance/domain/entities/maintenance-record.entity';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 describe('MaintenanceRecord Entity', () => {
   const validProps = {

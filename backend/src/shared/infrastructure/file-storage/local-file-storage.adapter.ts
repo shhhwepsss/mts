@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { FileStoragePort } from './file-storage.port';
+import { FileStoragePort } from '@/shared/infrastructure/file-storage/file-storage.port';
 
 @Injectable()
 export class LocalFileStorageAdapter implements FileStoragePort {

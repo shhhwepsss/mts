@@ -1,5 +1,5 @@
-import { MaintenanceRecord } from '../../domain/entities/maintenance-record.entity';
-import { MaintenanceRecordOrmEntity } from './maintenance-record.orm-entity';
+import { MaintenanceRecord } from '@/modules/maintenance/domain/entities/maintenance-record.entity';
+import { MaintenanceRecordOrmEntity } from '@/modules/maintenance/infrastructure/persistence/maintenance-record.orm-entity';
 
 export class MaintenanceRecordMapper {
   static toDomain(

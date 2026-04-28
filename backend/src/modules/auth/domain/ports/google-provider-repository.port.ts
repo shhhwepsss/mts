@@ -1,4 +1,4 @@
-import { GoogleProvider } from '../entities/google-provider.entity';
+import { GoogleProvider } from '@/modules/auth/domain/entities/google-provider.entity';
 
 export const GOOGLE_PROVIDER_REPOSITORY = Symbol('GOOGLE_PROVIDER_REPOSITORY');
 

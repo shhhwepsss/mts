@@ -1,6 +1,6 @@
-import { MaintenanceCalculator } from '../../../../../src/modules/maintenance/domain/services/maintenance-calculator.service';
-import { MaintenanceTask } from '../../../../../src/modules/maintenance/domain/entities/maintenance-task.entity';
-import { TaskStatusEnum } from '../../../../../src/modules/maintenance/domain/value-objects/task-status.vo';
+import { MaintenanceCalculator } from '@/modules/maintenance/domain/services/maintenance-calculator.service';
+import { MaintenanceTask } from '@/modules/maintenance/domain/entities/maintenance-task.entity';
+import { TaskStatusEnum } from '@/modules/maintenance/domain/value-objects/task-status.vo';
 
 describe('MaintenanceCalculator', () => {
   const calculator = new MaintenanceCalculator();
@@ -26,6 +26,7 @@ describe('MaintenanceCalculator', () => {
       motorcycleId: 'moto-1',
       name: 'Oil Change',
       intervalHours: 15,
+      lastServicedAtHours: 0,
       isDefault: true,
       isActive: false,
     });
@@ -39,6 +40,7 @@ describe('MaintenanceCalculator', () => {
       motorcycleId: 'moto-1',
       name: 'Oil Change',
       intervalHours: 15,
+      lastServicedAtHours: 0,
       isDefault: true,
       isActive: true,
     });

@@ -2,16 +2,16 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   MAINTENANCE_RECORD_REPOSITORY,
   type MaintenanceRecordRepositoryPort,
-} from '../../domain/ports/maintenance-record-repository.port';
+} from '@/modules/maintenance/domain/ports/maintenance-record-repository.port';
 import {
   MOTORCYCLE_REPOSITORY,
   type MotorcycleRepositoryPort,
-} from '../../../motorcycle/domain/ports/motorcycle-repository.port';
-import { MaintenanceRecord } from '../../domain/entities/maintenance-record.entity';
+} from '@/modules/motorcycle/domain/ports/motorcycle-repository.port';
+import { MaintenanceRecord } from '@/modules/maintenance/domain/entities/maintenance-record.entity';
 import {
   NotFoundException,
   ForbiddenException,
-} from '../../../../shared/domain/exceptions';
+} from '@/shared/domain/exceptions';
 
 @Injectable()
 export class EditRecordUseCase {
