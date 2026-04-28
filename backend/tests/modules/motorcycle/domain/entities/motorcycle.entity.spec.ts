@@ -1,6 +1,6 @@
-import { Motorcycle } from './motorcycle.entity';
-import { MotorcycleTypeEnum } from '../enums/motorcycle-type.enum';
-import { ValidationException } from '../../../../shared/domain/exceptions';
+import { Motorcycle } from '../../../../../src/modules/motorcycle/domain/entities/motorcycle.entity';
+import { MotorcycleTypeEnum } from '../../../../../src/modules/motorcycle/domain/enums/motorcycle-type.enum';
+import { ValidationException } from '../../../../../src/shared/domain/exceptions';
 
 describe('Motorcycle Entity', () => {
   const validProps = {

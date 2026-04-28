@@ -3,7 +3,7 @@ import {
   ValidationException,
   NotFoundException,
   ForbiddenException,
-} from './exceptions';
+} from '../../../src/shared/domain/exceptions';
 
 describe('Domain Exceptions', () => {
   it('DomainException has message and code', () => {

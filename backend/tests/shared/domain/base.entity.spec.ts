@@ -1,4 +1,4 @@
-import { BaseEntity } from './base.entity';
+import { BaseEntity } from '../../../src/shared/domain/base.entity';
 
 class TestEntity extends BaseEntity {
   constructor(id: string, createdAt?: Date, updatedAt?: Date) {

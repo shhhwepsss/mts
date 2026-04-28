@@ -1,5 +1,5 @@
-import { User } from './user.entity';
-import { ValidationException } from '../../../../shared/domain/exceptions';
+import { User } from '../../../../../src/modules/user/domain/entities/user.entity';
+import { ValidationException } from '../../../../../src/shared/domain/exceptions';
 
 describe('User Entity', () => {
   it('should create a valid user', () => {

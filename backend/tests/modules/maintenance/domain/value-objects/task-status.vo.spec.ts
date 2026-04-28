@@ -1,4 +1,4 @@
-import { TaskStatus, TaskStatusEnum } from './task-status.vo';
+import { TaskStatus, TaskStatusEnum } from '../../../../../src/modules/maintenance/domain/value-objects/task-status.vo';
 
 describe('TaskStatus', () => {
   it('should be OK when hours remaining > 2', () => {

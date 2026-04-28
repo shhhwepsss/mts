@@ -1,5 +1,5 @@
-import { MaintenanceTask } from './maintenance-task.entity';
-import { ValidationException } from '../../../../shared/domain/exceptions';
+import { MaintenanceTask } from '../../../../../src/modules/maintenance/domain/entities/maintenance-task.entity';
+import { ValidationException } from '../../../../../src/shared/domain/exceptions';
 
 describe('MaintenanceTask Entity', () => {
   const validProps = {

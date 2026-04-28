@@ -1,6 +1,6 @@
-import { MaintenanceCalculator } from './maintenance-calculator.service';
-import { MaintenanceTask } from '../entities/maintenance-task.entity';
-import { TaskStatusEnum } from '../value-objects/task-status.vo';
+import { MaintenanceCalculator } from '../../../../../src/modules/maintenance/domain/services/maintenance-calculator.service';
+import { MaintenanceTask } from '../../../../../src/modules/maintenance/domain/entities/maintenance-task.entity';
+import { TaskStatusEnum } from '../../../../../src/modules/maintenance/domain/value-objects/task-status.vo';
 
 describe('MaintenanceCalculator', () => {
   const calculator = new MaintenanceCalculator();
