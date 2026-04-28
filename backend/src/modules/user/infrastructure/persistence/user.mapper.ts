@@ -7,7 +7,7 @@ export class UserMapper {
       id: orm.id,
       name: orm.name,
       email: orm.email,
-      avatarUrl: orm.avatarUrl ?? undefined,
+      avatarUrl: orm.avatarUrl,
       createdAt: orm.createdAt,
       updatedAt: orm.updatedAt,
     });

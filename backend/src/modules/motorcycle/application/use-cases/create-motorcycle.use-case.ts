@@ -23,9 +23,21 @@ export class CreateMotorcycleUseCase {
     year: number;
     type: MotorcycleTypeEnum;
     currentHours: number;
-    imageUrl?: string;
+    imageUrl: string | null;
   }): Promise<Motorcycle> {
-    const motorcycle = new Motorcycle(params);
+    const motorcycle = new Motorcycle({
+      id: null,
+      userId: params.userId,
+      name: params.name,
+      brand: params.brand,
+      model: params.model,
+      year: params.year,
+      type: params.type,
+      currentHours: params.currentHours,
+      imageUrl: params.imageUrl,
+      createdAt: null,
+      updatedAt: null,
+    });
     const saved = await this.motoRepo.save(motorcycle);
     await this.defaultTaskFactory.createDefaultTasks(
       saved.getId(),

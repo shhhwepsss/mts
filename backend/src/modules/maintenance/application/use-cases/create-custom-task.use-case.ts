@@ -27,7 +27,7 @@ export class CreateCustomTaskUseCase {
     motorcycleId: string,
     params: {
       name: string;
-      description?: string;
+      description: string | null;
       intervalHours: number;
     },
   ): Promise<MaintenanceTask> {
@@ -37,6 +37,7 @@ export class CreateCustomTaskUseCase {
       throw new ForbiddenException('Not your motorcycle');
 
     const task = new MaintenanceTask({
+      id: null,
       motorcycleId,
       name: params.name,
       description: params.description,
@@ -44,6 +45,8 @@ export class CreateCustomTaskUseCase {
       isDefault: false,
       isActive: true,
       lastServicedAtHours: 0,
+      createdAt: null,
+      updatedAt: null,
     });
     return this.taskRepo.save(task);
   }

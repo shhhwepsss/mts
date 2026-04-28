@@ -3,12 +3,12 @@ import { BaseEntity } from '@/shared/domain/base.entity';
 import { ValidationException } from '@/shared/domain/exceptions';
 
 interface GoogleProviderProps {
-  id?: string;
+  id: string | null;
   userId: string;
   googleUserId: string;
   googleEmail: string;
-  googleAvatarUrl?: string;
-  createdAt?: Date;
+  googleAvatarUrl: string | null;
+  createdAt: Date | null;
 }
 
 export class GoogleProvider extends BaseEntity {
@@ -18,7 +18,7 @@ export class GoogleProvider extends BaseEntity {
   private readonly _googleAvatarUrl: string | null;
 
   constructor(props: GoogleProviderProps) {
-    super(props.id ?? randomUUID(), props.createdAt);
+    super(props.id ?? randomUUID(), props.createdAt, null);
     if (!props.googleUserId || props.googleUserId.trim().length === 0) {
       throw new ValidationException('Google user ID must not be empty');
     }

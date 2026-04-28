@@ -7,12 +7,16 @@ describe('MaintenanceCalculator', () => {
 
   it('should compute status for active tasks', () => {
     const task = new MaintenanceTask({
+      id: null,
       motorcycleId: 'moto-1',
       name: 'Oil Change',
+      description: null,
       intervalHours: 15,
       lastServicedAtHours: 130,
       isDefault: true,
       isActive: true,
+      createdAt: null,
+      updatedAt: null,
     });
 
     const results = calculator.calculateStatuses([task], 142.5);
@@ -23,12 +27,16 @@ describe('MaintenanceCalculator', () => {
 
   it('should skip inactive tasks', () => {
     const task = new MaintenanceTask({
+      id: null,
       motorcycleId: 'moto-1',
       name: 'Oil Change',
+      description: null,
       intervalHours: 15,
       lastServicedAtHours: 0,
       isDefault: true,
       isActive: false,
+      createdAt: null,
+      updatedAt: null,
     });
 
     const results = calculator.calculateStatuses([task], 100);
@@ -37,12 +45,16 @@ describe('MaintenanceCalculator', () => {
 
   it('should flag OVERDUE when never serviced', () => {
     const task = new MaintenanceTask({
+      id: null,
       motorcycleId: 'moto-1',
       name: 'Oil Change',
+      description: null,
       intervalHours: 15,
       lastServicedAtHours: 0,
       isDefault: true,
       isActive: true,
+      createdAt: null,
+      updatedAt: null,
     });
 
     const results = calculator.calculateStatuses([task], 100);

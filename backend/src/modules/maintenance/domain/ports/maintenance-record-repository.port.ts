@@ -8,9 +8,9 @@ export interface MaintenanceRecordRepositoryPort {
   findById(id: string): Promise<MaintenanceRecord | null>;
   findByMotorcycleId(
     motorcycleId: string,
-    taskId?: string,
-    page?: number,
-    limit?: number,
+    taskId: string | null,
+    page: number | null,
+    limit: number | null,
   ): Promise<{ records: MaintenanceRecord[]; total: number }>;
   findLatestByTaskId(taskId: string): Promise<MaintenanceRecord | null>;
   findPreviousByTaskId(

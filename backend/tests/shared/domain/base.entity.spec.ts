@@ -1,7 +1,11 @@
 import { BaseEntity } from '@/shared/domain/base.entity';
 
 class TestEntity extends BaseEntity {
-  constructor(id: string, createdAt?: Date, updatedAt?: Date) {
+  constructor(
+    id: string,
+    createdAt: Date | null = null,
+    updatedAt: Date | null = null,
+  ) {
     super(id, createdAt, updatedAt);
   }
 }

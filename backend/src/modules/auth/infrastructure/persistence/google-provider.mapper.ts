@@ -8,7 +8,7 @@ export class GoogleProviderMapper {
       userId: orm.userId,
       googleUserId: orm.googleUserId,
       googleEmail: orm.googleEmail,
-      googleAvatarUrl: orm.googleAvatarUrl ?? undefined,
+      googleAvatarUrl: orm.googleAvatarUrl,
       createdAt: orm.createdAt,
     });
   }

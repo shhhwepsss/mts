@@ -27,10 +27,10 @@ export class EditRecordUseCase {
     motorcycleId: string,
     recordId: string,
     params: {
-      performedAtHours?: number;
-      performedAtDate?: Date;
-      notes?: string;
-      photos?: string[];
+      performedAtHours: number | null;
+      performedAtDate: Date | null;
+      notes: string | null;
+      photos: string[] | null;
     },
   ): Promise<MaintenanceRecord> {
     const moto = await this.motoRepo.findById(motorcycleId);

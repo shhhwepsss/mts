@@ -25,9 +25,9 @@ export class GetRecordsUseCase {
   async execute(
     userId: string,
     motorcycleId: string,
-    taskId?: string,
-    page?: number,
-    limit?: number,
+    taskId: string | null,
+    page: number | null,
+    limit: number | null,
   ): Promise<{ records: MaintenanceRecord[]; total: number }> {
     const moto = await this.motoRepo.findById(motorcycleId);
     if (!moto) throw new NotFoundException('Motorcycle not found');

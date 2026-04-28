@@ -3,12 +3,12 @@ import { BaseEntity } from '@/shared/domain/base.entity';
 import { ValidationException } from '@/shared/domain/exceptions';
 
 interface UserProps {
-  id?: string;
+  id: string | null;
   name: string;
   email: string;
-  avatarUrl?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  avatarUrl: string | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 }
 
 export class User extends BaseEntity {

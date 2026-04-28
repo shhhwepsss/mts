@@ -35,8 +35,8 @@ export class CompleteTaskUseCase {
     params: {
       performedAtHours: number;
       performedAtDate: Date;
-      notes?: string;
-      photos?: string[];
+      notes: string | null;
+      photos: string[] | null;
     },
   ): Promise<MaintenanceRecord> {
     const moto = await this.motoRepo.findById(motorcycleId);
@@ -49,6 +49,7 @@ export class CompleteTaskUseCase {
       throw new NotFoundException('Task not found');
 
     const record = new MaintenanceRecord({
+      id: null,
       taskId,
       motorcycleId,
       performedAtHours: params.performedAtHours,
@@ -56,6 +57,7 @@ export class CompleteTaskUseCase {
       currentMotorcycleHours: moto.getCurrentHours(),
       notes: params.notes,
       photos: params.photos,
+      createdAt: null,
     });
     const savedRecord = await this.recordRepo.save(record);
 

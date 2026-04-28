@@ -20,17 +20,18 @@ export class MaintenanceRecordRepository implements MaintenanceRecordRepositoryP
 
   async findByMotorcycleId(
     motorcycleId: string,
-    taskId?: string,
-    page = 1,
-    limit = 20,
+    taskId: string | null,
+    page: number | null,
+    limit: number | null,
   ): Promise<{ records: MaintenanceRecord[]; total: number }> {
-    const where: { motorcycleId: string; taskId?: string } = { motorcycleId };
-    if (taskId) where.taskId = taskId;
+    const effectivePage = page ?? 1;
+    const effectiveLimit = limit ?? 20;
+    const where = taskId !== null ? { motorcycleId, taskId } : { motorcycleId };
     const [orms, total] = await this.repo.findAndCount({
       where,
       order: { performedAtDate: 'DESC', createdAt: 'DESC' },
-      skip: (page - 1) * limit,
-      take: limit,
+      skip: (effectivePage - 1) * effectiveLimit,
+      take: effectiveLimit,
     });
     return {
       records: orms.map((o) => MaintenanceRecordMapper.toDomain(o)),

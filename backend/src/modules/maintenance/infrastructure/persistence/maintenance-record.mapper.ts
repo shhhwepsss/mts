@@ -13,8 +13,8 @@ export class MaintenanceRecordMapper {
       performedAtHours: Number(orm.performedAtHours),
       performedAtDate: new Date(orm.performedAtDate),
       currentMotorcycleHours,
-      notes: orm.notes ?? undefined,
-      photos: orm.photos ?? undefined,
+      notes: orm.notes,
+      photos: orm.photos,
       createdAt: orm.createdAt,
     });
   }

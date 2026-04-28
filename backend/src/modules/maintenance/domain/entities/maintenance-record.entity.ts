@@ -3,15 +3,15 @@ import { BaseEntity } from '@/shared/domain/base.entity';
 import { ValidationException } from '@/shared/domain/exceptions';
 
 interface MaintenanceRecordProps {
-  id?: string;
+  id: string | null;
   taskId: string;
   motorcycleId: string;
   performedAtHours: number;
   performedAtDate: Date;
   currentMotorcycleHours: number;
-  notes?: string;
-  photos?: string[];
-  createdAt?: Date;
+  notes: string | null;
+  photos: string[] | null;
+  createdAt: Date | null;
 }
 
 export class MaintenanceRecord extends BaseEntity {
@@ -23,7 +23,7 @@ export class MaintenanceRecord extends BaseEntity {
   private _photos: string[];
 
   constructor(props: MaintenanceRecordProps) {
-    super(props.id ?? randomUUID(), props.createdAt);
+    super(props.id ?? randomUUID(), props.createdAt, null);
     if (props.performedAtHours > props.currentMotorcycleHours) {
       throw new ValidationException(
         'Performed at hours cannot exceed current motorcycle hours',
@@ -62,13 +62,13 @@ export class MaintenanceRecord extends BaseEntity {
   }
 
   updateDetails(props: {
-    performedAtHours?: number;
-    performedAtDate?: Date;
+    performedAtHours: number | null;
+    performedAtDate: Date | null;
     currentMotorcycleHours: number;
-    notes?: string;
-    photos?: string[];
+    notes: string | null;
+    photos: string[] | null;
   }): void {
-    if (props.performedAtHours !== undefined) {
+    if (props.performedAtHours !== null) {
       if (props.performedAtHours > props.currentMotorcycleHours) {
         throw new ValidationException(
           'Performed at hours cannot exceed current motorcycle hours',
@@ -76,7 +76,7 @@ export class MaintenanceRecord extends BaseEntity {
       }
       this._performedAtHours = props.performedAtHours;
     }
-    if (props.performedAtDate !== undefined) {
+    if (props.performedAtDate !== null) {
       const now = new Date();
       now.setHours(23, 59, 59, 999);
       if (props.performedAtDate > now) {
@@ -86,7 +86,7 @@ export class MaintenanceRecord extends BaseEntity {
       }
       this._performedAtDate = props.performedAtDate;
     }
-    if (props.notes !== undefined) this._notes = props.notes;
-    if (props.photos !== undefined) this._photos = props.photos;
+    if (props.notes !== null) this._notes = props.notes;
+    if (props.photos !== null) this._photos = props.photos;
   }
 }

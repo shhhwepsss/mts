@@ -4,6 +4,7 @@ import { ValidationException } from '@/shared/domain/exceptions';
 
 describe('Motorcycle Entity', () => {
   const validProps = {
+    id: null,
     userId: '123e4567-e89b-12d3-a456-426614174000',
     name: 'My KTM',
     brand: 'KTM',
@@ -11,6 +12,9 @@ describe('Motorcycle Entity', () => {
     year: 2023,
     type: MotorcycleTypeEnum.ENDURO,
     currentHours: 142.5,
+    imageUrl: null,
+    createdAt: null,
+    updatedAt: null,
   };
 
   it('should create a valid motorcycle', () => {

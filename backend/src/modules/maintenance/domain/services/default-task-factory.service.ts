@@ -22,6 +22,7 @@ export class DefaultTaskFactory {
     const tasks = templates.map(
       (t) =>
         new MaintenanceTask({
+          id: null,
           motorcycleId,
           name: t.name,
           description: t.description,
@@ -29,6 +30,8 @@ export class DefaultTaskFactory {
           lastServicedAtHours: 0,
           isDefault: true,
           isActive: true,
+          createdAt: null,
+          updatedAt: null,
         }),
     );
     return this.taskRepo.saveMany(tasks);

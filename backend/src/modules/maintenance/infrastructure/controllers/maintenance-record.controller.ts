@@ -24,10 +24,11 @@ import { EditRecordUseCase } from '@/modules/maintenance/application/use-cases/e
 import { DeleteRecordUseCase } from '@/modules/maintenance/application/use-cases/delete-record.use-case';
 
 export class EditRecordDto {
-  @IsOptional() @IsNumber() performedAtHours?: number;
-  @IsOptional() @IsDateString() performedAtDate?: string;
-  @IsOptional() @IsString() notes?: string;
-  @IsOptional() @IsArray() @IsString({ each: true }) photos?: string[];
+  @IsOptional() @IsNumber() performedAtHours: number | null = null;
+  @IsOptional() @IsDateString() performedAtDate: string | null = null;
+  @IsOptional() @IsString() notes: string | null = null;
+  @IsOptional() @IsArray() @IsString({ each: true }) photos: string[] | null =
+    null;
 }
 
 @Controller('motorcycles/:motorcycleId/records')
@@ -44,12 +45,12 @@ export class MaintenanceRecordController {
   async list(
     @CurrentUser() user: AuthenticatedUser,
     @Param('motorcycleId') motorcycleId: string,
-    @Query('taskId') taskId?: string,
-    @Query('page') page?: string,
-    @Query('limit') limit?: string,
+    @Query('taskId') taskId: string | null = null,
+    @Query('page') page: string | null = null,
+    @Query('limit') limit: string | null = null,
   ) {
-    const pageNum = page ? parseInt(page, 10) : 1;
-    const limitNum = limit ? parseInt(limit, 10) : 20;
+    const pageNum = page !== null ? parseInt(page, 10) : 1;
+    const limitNum = limit !== null ? parseInt(limit, 10) : 20;
     const { records, total } = await this.getRecords.execute(
       user.id,
       motorcycleId,
@@ -102,9 +103,8 @@ export class MaintenanceRecordController {
   ) {
     const r = await this.editRecord.execute(user.id, motorcycleId, recordId, {
       performedAtHours: dto.performedAtHours,
-      performedAtDate: dto.performedAtDate
-        ? new Date(dto.performedAtDate)
-        : undefined,
+      performedAtDate:
+        dto.performedAtDate !== null ? new Date(dto.performedAtDate) : null,
       notes: dto.notes,
       photos: dto.photos,
     });

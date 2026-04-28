@@ -27,10 +27,10 @@ export class UpdateTaskUseCase {
     motorcycleId: string,
     taskId: string,
     params: {
-      name?: string;
-      description?: string;
-      intervalHours?: number;
-      isActive?: boolean;
+      name: string | null;
+      description: string | null;
+      intervalHours: number | null;
+      isActive: boolean | null;
     },
   ): Promise<MaintenanceTask> {
     const moto = await this.motoRepo.findById(motorcycleId);

@@ -3,16 +3,16 @@ import { BaseEntity } from '@/shared/domain/base.entity';
 import { ValidationException } from '@/shared/domain/exceptions';
 
 interface MaintenanceTaskProps {
-  id?: string;
+  id: string | null;
   motorcycleId: string;
   name: string;
-  description?: string;
+  description: string | null;
   intervalHours: number;
   lastServicedAtHours: number;
   isDefault: boolean;
   isActive: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 }
 
 export class MaintenanceTask extends BaseEntity {
@@ -74,23 +74,23 @@ export class MaintenanceTask extends BaseEntity {
   }
 
   updateDetails(props: {
-    name?: string;
-    description?: string;
-    intervalHours?: number;
-    isActive?: boolean;
+    name: string | null;
+    description: string | null;
+    intervalHours: number | null;
+    isActive: boolean | null;
   }): void {
-    if (props.name !== undefined) {
-      if (!props.name || props.name.trim().length === 0)
+    if (props.name !== null) {
+      if (props.name.trim().length === 0)
         throw new ValidationException('Task name must not be empty');
       this._name = props.name;
     }
-    if (props.description !== undefined) this._description = props.description;
-    if (props.intervalHours !== undefined) {
+    if (props.description !== null) this._description = props.description;
+    if (props.intervalHours !== null) {
       if (props.intervalHours <= 0)
         throw new ValidationException('Interval hours must be greater than 0');
       this._intervalHours = props.intervalHours;
     }
-    if (props.isActive !== undefined) this._isActive = props.isActive;
+    if (props.isActive !== null) this._isActive = props.isActive;
     this.setUpdatedAt(new Date());
   }
 }

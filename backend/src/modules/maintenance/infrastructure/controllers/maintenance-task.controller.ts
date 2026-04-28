@@ -29,22 +29,23 @@ import { DeleteTaskUseCase } from '@/modules/maintenance/application/use-cases/d
 
 export class CreateTaskDto {
   @IsString() @IsNotEmpty() name: string;
-  @IsOptional() @IsString() description?: string;
+  @IsOptional() @IsString() description: string | null = null;
   @IsNumber() @Min(0.1) intervalHours: number;
 }
 
 export class UpdateTaskDto {
-  @IsOptional() @IsString() @IsNotEmpty() name?: string;
-  @IsOptional() @IsString() description?: string;
-  @IsOptional() @IsNumber() @Min(0.1) intervalHours?: number;
-  @IsOptional() @IsBoolean() isActive?: boolean;
+  @IsOptional() @IsString() @IsNotEmpty() name: string | null = null;
+  @IsOptional() @IsString() description: string | null = null;
+  @IsOptional() @IsNumber() @Min(0.1) intervalHours: number | null = null;
+  @IsOptional() @IsBoolean() isActive: boolean | null = null;
 }
 
 export class CompleteTaskDto {
   @IsNumber() @Min(0) performedAtHours: number;
   @IsDateString() performedAtDate: string;
-  @IsOptional() @IsString() notes?: string;
-  @IsOptional() @IsArray() @IsString({ each: true }) photos?: string[];
+  @IsOptional() @IsString() notes: string | null = null;
+  @IsOptional() @IsArray() @IsString({ each: true }) photos: string[] | null =
+    null;
 }
 
 @Controller('motorcycles/:motorcycleId/tasks')

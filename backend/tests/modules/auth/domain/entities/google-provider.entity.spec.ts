@@ -2,8 +2,15 @@ import { GoogleProvider } from '@/modules/auth/domain/entities/google-provider.e
 import { ValidationException } from '@/shared/domain/exceptions';
 
 describe('GoogleProvider Entity', () => {
+  const baseProps = {
+    id: null,
+    googleAvatarUrl: null,
+    createdAt: null,
+  };
+
   it('should create a valid google provider', () => {
     const provider = new GoogleProvider({
+      ...baseProps,
       userId: '123e4567-e89b-12d3-a456-426614174000',
       googleUserId: 'google-123',
       googleEmail: 'john@gmail.com',
@@ -16,6 +23,7 @@ describe('GoogleProvider Entity', () => {
     expect(
       () =>
         new GoogleProvider({
+          ...baseProps,
           userId: '123',
           googleUserId: '',
           googleEmail: 'john@gmail.com',
@@ -27,6 +35,7 @@ describe('GoogleProvider Entity', () => {
     expect(
       () =>
         new GoogleProvider({
+          ...baseProps,
           userId: '123',
           googleUserId: 'google-123',
           googleEmail: '',
@@ -36,6 +45,7 @@ describe('GoogleProvider Entity', () => {
 
   it('should allow optional googleAvatarUrl', () => {
     const provider = new GoogleProvider({
+      ...baseProps,
       userId: '123',
       googleUserId: 'google-123',
       googleEmail: 'john@gmail.com',

@@ -21,12 +21,12 @@ export class UpdateMotorcycleUseCase {
     userId: string,
     motorcycleId: string,
     params: {
-      name?: string;
-      brand?: string;
-      model?: string;
-      year?: number;
-      type?: MotorcycleTypeEnum;
-      imageUrl?: string;
+      name: string | null;
+      brand: string | null;
+      model: string | null;
+      year: number | null;
+      type: MotorcycleTypeEnum | null;
+      imageUrl: string | null;
     },
   ): Promise<Motorcycle> {
     const moto = await this.motoRepo.findById(motorcycleId);

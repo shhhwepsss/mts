@@ -4,7 +4,7 @@ import { ValidationException } from '@/shared/domain/exceptions';
 import { MotorcycleTypeEnum } from '@/modules/motorcycle/domain/enums/motorcycle-type.enum';
 
 interface MotorcycleProps {
-  id?: string;
+  id: string | null;
   userId: string;
   name: string;
   brand: string;
@@ -12,9 +12,9 @@ interface MotorcycleProps {
   year: number;
   type: MotorcycleTypeEnum;
   currentHours: number;
-  imageUrl?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  imageUrl: string | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 }
 
 export class Motorcycle extends BaseEntity {
@@ -79,34 +79,34 @@ export class Motorcycle extends BaseEntity {
   }
 
   updateDetails(props: {
-    name?: string;
-    brand?: string;
-    model?: string;
-    year?: number;
-    type?: MotorcycleTypeEnum;
-    imageUrl?: string;
+    name: string | null;
+    brand: string | null;
+    model: string | null;
+    year: number | null;
+    type: MotorcycleTypeEnum | null;
+    imageUrl: string | null;
   }): void {
-    if (props.name !== undefined) {
+    if (props.name !== null) {
       this.validateString(props.name, 'Name', 255);
       this._name = props.name;
     }
-    if (props.brand !== undefined) {
+    if (props.brand !== null) {
       this.validateString(props.brand, 'Brand', 255);
       this._brand = props.brand;
     }
-    if (props.model !== undefined) {
+    if (props.model !== null) {
       this.validateString(props.model, 'Model', 255);
       this._model = props.model;
     }
-    if (props.year !== undefined) {
+    if (props.year !== null) {
       this.validateYear(props.year);
       this._year = props.year;
     }
-    if (props.type !== undefined) {
+    if (props.type !== null) {
       this.validateType(props.type);
       this._type = props.type;
     }
-    if (props.imageUrl !== undefined) {
+    if (props.imageUrl !== null) {
       this._imageUrl = props.imageUrl;
     }
     this.setUpdatedAt(new Date());

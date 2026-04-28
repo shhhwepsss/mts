@@ -3,7 +3,7 @@ export abstract class BaseEntity {
   private readonly _createdAt: Date;
   private _updatedAt: Date;
 
-  constructor(id: string, createdAt?: Date, updatedAt?: Date) {
+  constructor(id: string, createdAt: Date | null, updatedAt: Date | null) {
     this._id = id;
     this._createdAt = createdAt ?? new Date();
     this._updatedAt = updatedAt ?? new Date();

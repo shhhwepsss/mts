@@ -3,11 +3,15 @@ import { ValidationException } from '@/shared/domain/exceptions';
 
 describe('MaintenanceRecord Entity', () => {
   const validProps = {
+    id: null,
     taskId: '123',
     motorcycleId: '456',
     performedAtHours: 100,
     performedAtDate: new Date('2026-04-13'),
     currentMotorcycleHours: 142.5,
+    notes: null,
+    photos: null,
+    createdAt: null,
   };
 
   it('should create a valid record', () => {

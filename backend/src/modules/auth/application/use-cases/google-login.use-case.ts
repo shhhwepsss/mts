@@ -50,17 +50,22 @@ export class GoogleLoginUseCase {
     }
 
     const user = new User({
-      name: payload.name || payload.email.split('@')[0],
+      id: null,
+      name: payload.name ?? payload.email.split('@')[0],
       email: payload.email,
-      avatarUrl: payload.picture,
+      avatarUrl: payload.picture ?? null,
+      createdAt: null,
+      updatedAt: null,
     });
     const savedUser = await this.userRepo.save(user);
 
     const provider = new GoogleProvider({
+      id: null,
       userId: savedUser.getId(),
       googleUserId: payload.sub,
       googleEmail: payload.email,
-      googleAvatarUrl: payload.picture,
+      googleAvatarUrl: payload.picture ?? null,
+      createdAt: null,
     });
     await this.providerRepo.save(provider);
 

@@ -35,16 +35,20 @@ export class CreateMotorcycleDto {
   @IsNumber() year: number;
   @IsEnum(MotorcycleTypeEnum) type: MotorcycleTypeEnum;
   @IsNumber() @Min(0) currentHours: number;
-  @IsOptional() @IsString() imageUrl?: string;
+  @IsOptional() @IsString() imageUrl: string | null = null;
 }
 
 export class UpdateMotorcycleDto {
-  @IsOptional() @IsString() @IsNotEmpty() @MaxLength(255) name?: string;
-  @IsOptional() @IsString() @IsNotEmpty() @MaxLength(255) brand?: string;
-  @IsOptional() @IsString() @IsNotEmpty() @MaxLength(255) model?: string;
-  @IsOptional() @IsNumber() year?: number;
-  @IsOptional() @IsEnum(MotorcycleTypeEnum) type?: MotorcycleTypeEnum;
-  @IsOptional() @IsString() imageUrl?: string;
+  @IsOptional() @IsString() @IsNotEmpty() @MaxLength(255) name: string | null =
+    null;
+  @IsOptional() @IsString() @IsNotEmpty() @MaxLength(255) brand: string | null =
+    null;
+  @IsOptional() @IsString() @IsNotEmpty() @MaxLength(255) model: string | null =
+    null;
+  @IsOptional() @IsNumber() year: number | null = null;
+  @IsOptional() @IsEnum(MotorcycleTypeEnum) type: MotorcycleTypeEnum | null =
+    null;
+  @IsOptional() @IsString() imageUrl: string | null = null;
 }
 
 export class UpdateHoursDto {

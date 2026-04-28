@@ -3,12 +3,16 @@ import { ValidationException } from '@/shared/domain/exceptions';
 
 describe('MaintenanceTask Entity', () => {
   const validProps = {
+    id: null,
     motorcycleId: '123',
     name: 'Oil Change',
+    description: null,
     intervalHours: 15,
     lastServicedAtHours: 0,
     isDefault: true,
     isActive: true,
+    createdAt: null,
+    updatedAt: null,
   };
 
   it('should create a valid task', () => {

@@ -7,7 +7,7 @@ export class MaintenanceTaskMapper {
       id: orm.id,
       motorcycleId: orm.motorcycleId,
       name: orm.name,
-      description: orm.description ?? undefined,
+      description: orm.description,
       intervalHours: Number(orm.intervalHours),
       lastServicedAtHours: Number(orm.lastServicedAtHours),
       isDefault: orm.isDefault,

@@ -13,7 +13,7 @@ export class MotorcycleMapper {
       year: orm.year,
       type: orm.type as MotorcycleTypeEnum,
       currentHours: Number(orm.currentHours),
-      imageUrl: orm.imageUrl ?? undefined,
+      imageUrl: orm.imageUrl,
       createdAt: orm.createdAt,
       updatedAt: orm.updatedAt,
     });
