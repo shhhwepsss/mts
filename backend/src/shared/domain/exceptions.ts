@@ -29,3 +29,9 @@ export class ForbiddenException extends DomainException {
     super(message, 'FORBIDDEN');
   }
 }
+
+export class IllegalStateException extends DomainException {
+  constructor(message: string) {
+    super(message, 'ILLEGAL_STATE');
+  }
+}

@@ -1,4 +1,5 @@
 import { BaseEntity } from '@/shared/domain/base.entity';
+import { IllegalStateException } from '@/shared/domain/exceptions';
 
 class TestEntity extends BaseEntity {
   constructor(
@@ -17,6 +18,13 @@ describe('BaseEntity', () => {
     expect(entity.getId()).toBe(id);
   });
 
+  it('should throw if empty id provided', () => {
+    const emptyTrimmedId = '';
+    const emptyId = ' ';
+    expect(() => new TestEntity(emptyId)).toThrow(IllegalStateException);
+    expect(() => new TestEntity(emptyTrimmedId)).toThrow(IllegalStateException);
+  });
+
   it('should set createdAt and updatedAt', () => {
     const entity = new TestEntity('some-id');
     expect(entity.getCreatedAt()).toBeInstanceOf(Date);
@@ -31,11 +39,18 @@ describe('BaseEntity', () => {
     expect(entity.getUpdatedAt()).toBe(updated);
   });
 
+  it('should validate created is before updated', () => {
+    const created = new Date('2025-02-01');
+    const updated = new Date('2025-01-01');
+    expect(() => new TestEntity('some-id', created, updated)).toThrow(
+      IllegalStateException,
+    );
+  });
+
   it('should not expose fields directly', () => {
     const entity = new TestEntity('some-id');
-    const fields = entity as unknown as Record<string, unknown>;
-    expect(fields.id).toBeUndefined();
-    expect(fields.createdAt).toBeUndefined();
-    expect(fields.updatedAt).toBeUndefined();
+    expect(entity).not.toHaveProperty('id');
+    expect(entity).not.toHaveProperty('createdAt');
+    expect(entity).not.toHaveProperty('updatedAt');
   });
 });
