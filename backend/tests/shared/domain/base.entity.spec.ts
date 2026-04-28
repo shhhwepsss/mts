@@ -1,5 +1,5 @@
 import { BaseEntity } from '@/shared/domain/base.entity';
-import { IllegalStateException } from '@/shared/domain/exceptions';
+import { ValidationException } from '@/shared/domain/exceptions';
 
 class TestEntity extends BaseEntity {
   constructor(
@@ -21,8 +21,8 @@ describe('BaseEntity', () => {
   it('should throw if empty id provided', () => {
     const emptyTrimmedId = '';
     const emptyId = ' ';
-    expect(() => new TestEntity(emptyId)).toThrow(IllegalStateException);
-    expect(() => new TestEntity(emptyTrimmedId)).toThrow(IllegalStateException);
+    expect(() => new TestEntity(emptyId)).toThrow(ValidationException);
+    expect(() => new TestEntity(emptyTrimmedId)).toThrow(ValidationException);
   });
 
   it('should set createdAt and updatedAt', () => {
@@ -43,7 +43,7 @@ describe('BaseEntity', () => {
     const created = new Date('2025-02-01');
     const updated = new Date('2025-01-01');
     expect(() => new TestEntity('some-id', created, updated)).toThrow(
-      IllegalStateException,
+      ValidationException,
     );
   });
 

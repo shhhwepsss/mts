@@ -19,6 +19,27 @@ describe('GoogleProvider Entity', () => {
     expect(provider.getGoogleEmail()).toBe('john@gmail.com');
   });
 
+  it('should reject empty userId', () => {
+    expect(
+      () =>
+        new GoogleProvider({
+          ...baseProps,
+          userId: '',
+          googleUserId: '123',
+          googleEmail: 'john@gmail.com',
+        }),
+    ).toThrow(ValidationException);
+    expect(
+      () =>
+        new GoogleProvider({
+          ...baseProps,
+          userId: ' ',
+          googleUserId: '123',
+          googleEmail: 'john@gmail.com',
+        }),
+    ).toThrow(ValidationException);
+  });
+
   it('should reject empty googleUserId', () => {
     expect(
       () =>
@@ -26,6 +47,15 @@ describe('GoogleProvider Entity', () => {
           ...baseProps,
           userId: '123',
           googleUserId: '',
+          googleEmail: 'john@gmail.com',
+        }),
+    ).toThrow(ValidationException);
+    expect(
+      () =>
+        new GoogleProvider({
+          ...baseProps,
+          userId: '123',
+          googleUserId: ' ',
           googleEmail: 'john@gmail.com',
         }),
     ).toThrow(ValidationException);
@@ -41,18 +71,60 @@ describe('GoogleProvider Entity', () => {
           googleEmail: '',
         }),
     ).toThrow(ValidationException);
+    expect(
+      () =>
+        new GoogleProvider({
+          ...baseProps,
+          userId: '123',
+          googleUserId: 'google-123',
+          googleEmail: ' ',
+        }),
+    ).toThrow(ValidationException);
   });
 
-  it('should allow optional googleAvatarUrl', () => {
+  it('should reject invalid googleEmail', () => {
+    expect(
+      () =>
+        new GoogleProvider({
+          ...baseProps,
+          userId: '123',
+          googleUserId: 'google-123',
+          googleEmail: 'john.gmail.com',
+        }),
+    ).toThrow(ValidationException);
+  });
+
+  it('should reject empty googleAvatarUrl', () => {
+    expect(
+      () =>
+        new GoogleProvider({
+          ...baseProps,
+          userId: '123',
+          googleUserId: 'google-123',
+          googleEmail: 'john@gmail.com',
+          googleAvatarUrl: '',
+        }),
+    ).toThrow(ValidationException);
+    expect(
+      () =>
+        new GoogleProvider({
+          ...baseProps,
+          userId: '123',
+          googleUserId: 'google-123',
+          googleEmail: 'john@gmail.com',
+          googleAvatarUrl: ' ',
+        }),
+    ).toThrow(ValidationException);
+  });
+
+  it('should allow nullable googleAvatarUrl', () => {
     const provider = new GoogleProvider({
       ...baseProps,
       userId: '123',
       googleUserId: 'google-123',
       googleEmail: 'john@gmail.com',
-      googleAvatarUrl: 'https://lh3.googleusercontent.com/photo.jpg',
+      googleAvatarUrl: null,
     });
-    expect(provider.getGoogleAvatarUrl()).toBe(
-      'https://lh3.googleusercontent.com/photo.jpg',
-    );
+    expect(provider.getGoogleAvatarUrl()).toBe(null);
   });
 });
