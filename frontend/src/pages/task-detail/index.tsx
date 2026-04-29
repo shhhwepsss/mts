@@ -73,9 +73,11 @@ export function TaskDetailPage() {
           </dd>
           <dt style={{ color: 'var(--text-secondary)' }}>Remaining</dt>
           <dd>
-            {task.hoursRemaining >= 0
-              ? `${formatHours(task.hoursRemaining)} until service`
-              : `${formatHours(-task.hoursRemaining)} overdue`}
+            {task.status === 'NEED_TO_COMPLETE'
+              ? 'Service required now'
+              : task.hoursRemaining >= 0
+                ? `${formatHours(task.hoursRemaining)} until service`
+                : `${formatHours(-task.hoursRemaining)} overdue`}
           </dd>
         </dl>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>

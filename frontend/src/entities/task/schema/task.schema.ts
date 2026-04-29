@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-export const TaskStatusSchema = z.enum(['OK', 'DUE_SOON', 'OVERDUE']);
+export const TaskStatusSchema = z.enum([
+  'OK',
+  'DUE_SOON',
+  'OVERDUE',
+  'NEED_TO_COMPLETE',
+]);
 
 export const TaskSchema = z.object({
   id: z.string(),
