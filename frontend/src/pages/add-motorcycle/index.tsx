@@ -2,15 +2,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { motorcycleApi } from '@/entities/motorcycle';
 import { MotorcycleForm } from '@/features/create-motorcycle';
+import { useI18n } from '@/shared/i18n';
 import { Header } from '@/widgets/header';
 
 export function AddMotorcyclePage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t } = useI18n();
 
   const mutation = useMutation({
     mutationFn: motorcycleApi.create,
-    meta: { successMessage: 'Motorcycle added' },
+    meta: { successMessage: t('addMotorcyclePage.successMessage') },
     onSuccess: (m) => {
       queryClient.invalidateQueries({ queryKey: ['motorcycles'] });
       navigate(`/garage/${m.id}`);
@@ -21,9 +23,9 @@ export function AddMotorcyclePage() {
     <>
       <Header />
       <div style={{ padding: 24, maxWidth: 640, margin: '0 auto' }}>
-        <h1 style={{ marginBottom: 24 }}>Add Motorcycle</h1>
+        <h1 style={{ marginBottom: 24 }}>{t('addMotorcyclePage.title')}</h1>
         <MotorcycleForm
-          submitLabel="Add to Garage"
+          submitLabel={t('motorcycleForm.addToGarage')}
           isSubmitting={mutation.isPending}
           onSubmit={(params) => mutation.mutate(params)}
           onCancel={() => navigate('/garage')}

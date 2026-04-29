@@ -3,12 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import { taskApi } from '@/entities/task';
 import { motorcycleApi } from '@/entities/motorcycle';
 import { Spinner } from '@/shared/ui';
+import { useI18n } from '@/shared/i18n';
 import { Header } from '@/widgets/header';
 import { CompleteTaskForm } from '@/features/complete-task';
 
 export function CompleteTaskPage() {
   const { id, taskId } = useParams<{ id: string; taskId: string }>();
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   const tasksQuery = useQuery({
     queryKey: ['tasks', id],
@@ -38,7 +40,7 @@ export function CompleteTaskPage() {
     return (
       <>
         <Header />
-        <div style={{ padding: 24 }}>Not found.</div>
+        <div style={{ padding: 24 }}>{t('completeTaskPage.notFound')}</div>
       </>
     );
   }
@@ -47,7 +49,7 @@ export function CompleteTaskPage() {
     <>
       <Header />
       <div style={{ padding: 24, maxWidth: 560, margin: '0 auto' }}>
-        <h1 style={{ marginBottom: 8 }}>Complete Task</h1>
+        <h1 style={{ marginBottom: 8 }}>{t('completeTaskPage.title')}</h1>
         <p style={{ color: 'var(--text-secondary)', marginBottom: 24 }}>{task.name}</p>
         <CompleteTaskForm
           motorcycleId={id!}

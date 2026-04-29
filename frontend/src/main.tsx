@@ -11,6 +11,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster, toast } from 'sonner';
 import { router } from './app/router';
 import { extractErrorMessage } from './shared/lib';
+import { I18nProvider } from './shared/i18n';
 import './app/styles/global.css';
 
 const queryClient = new QueryClient({
@@ -41,8 +42,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster position="top-right" richColors closeButton />
+        <I18nProvider>
+          <RouterProvider router={router} />
+          <Toaster position="top-right" richColors closeButton />
+        </I18nProvider>
       </QueryClientProvider>
     </GoogleOAuthProvider>
   </React.StrictMode>,
