@@ -1,0 +1,68 @@
+# Continuous Deployment to the production server.
+#
+# Required GitHub repository secrets:
+#   SSH_HOST          — server hostname or IP
+#   SSH_USER          — SSH user with permission to run docker
+#   SSH_PORT          — SSH port
+#   SSH_PRIVATE_KEY   — full private key, including BEGIN/END lines
+#   DEPLOY_PATH       — absolute path to the cloned repo on the server
+#
+# The server must already have:
+#   - docker + docker compose plugin
+#   - the repo cloned at $DEPLOY_PATH
+#   - .env and backend/.env populated
+#   - certs bootstrapped via ./proxy/init-letsencrypt.sh
+
+name: Deploy
+
+on:
+  push:
+    branches: [production]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          envs: DEPLOY_PATH
+          script: |
+            set -euo pipefail
+            cd "$DEPLOY_PATH"
+
+            echo "::group::Fetching latest production"
+            git fetch --prune origin
+            git reset --hard origin/production
+            echo "Now at $(git rev-parse --short HEAD): $(git log -1 --pretty=%s)"
+            echo "::endgroup::"
+
+            echo "::group::Pulling base images"
+            docker compose pull --ignore-pull-failures
+            echo "::endgroup::"
+
+            echo "::group::Rebuilding and starting services"
+            docker compose up -d --build --remove-orphans
+            echo "::endgroup::"
+
+            echo "::group::Pruning unused images"
+            docker image prune -f
+            echo "::endgroup::"
+
+            echo "::group::Service status"
+            docker compose ps
+            echo "::endgroup::"
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
