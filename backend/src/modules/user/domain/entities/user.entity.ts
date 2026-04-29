@@ -13,7 +13,7 @@ interface UserProps {
   name: string;
   email: string;
   avatarUrl: string | null;
-  language?: UserLanguageEnum;
+  language: UserLanguageEnum;
   createdAt: Date | null;
   updatedAt: Date | null;
 }

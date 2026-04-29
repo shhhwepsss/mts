@@ -21,6 +21,8 @@ export class UserMapper {
     orm.email = domain.getEmail();
     orm.avatarUrl = domain.getAvatarUrl();
     orm.language = domain.getLanguage();
+    orm.createdAt = domain.getCreatedAt();
+    orm.updatedAt = domain.getUpdatedAt();
     return orm;
   }
 }
