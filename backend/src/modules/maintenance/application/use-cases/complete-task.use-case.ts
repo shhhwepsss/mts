@@ -61,7 +61,7 @@ export class CompleteTaskUseCase {
     });
     const savedRecord = await this.recordRepo.save(record);
 
-    task.markServiced(params.performedAtHours);
+    task.markServicedAt(params.performedAtHours);
     await this.taskRepo.save(task);
 
     return savedRecord;

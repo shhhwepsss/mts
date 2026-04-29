@@ -60,7 +60,7 @@ export class MaintenanceTask extends BaseEntity {
     return this._isActive;
   }
 
-  markServiced(atHours: number): void {
+  markServicedAt(atHours: number): void {
     this._lastServicedAtHours = atHours;
     this.setUpdatedAt(new Date());
   }

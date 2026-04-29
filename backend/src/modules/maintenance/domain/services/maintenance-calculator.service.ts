@@ -17,11 +17,11 @@ export class MaintenanceCalculator {
       .filter((t) => t.getIsActive())
       .map((task) => ({
         task,
-        status: TaskStatus.calculate(
-          task.getIntervalHours(),
+        status: TaskStatus.calculate({
+          intervalHours: task.getIntervalHours(),
           currentHours,
-          task.getLastServicedAtHours(),
-        ),
+          lastServicedAtHours: task.getLastServicedAtHours(),
+        }),
       }));
   }
 }

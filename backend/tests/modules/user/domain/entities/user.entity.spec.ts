@@ -82,6 +82,15 @@ describe('User Entity', () => {
           avatarUrl: ' ',
         }),
     ).toThrow(ValidationException);
+    expect(
+      () =>
+        new User({
+          ...baseProps,
+          name: 'John',
+          email: 'john@example.com',
+          avatarUrl: 'some-not-url-string',
+        }),
+    ).toThrow(ValidationException);
   });
 
   it('should reject updating invalid name', () => {

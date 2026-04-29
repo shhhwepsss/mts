@@ -22,10 +22,35 @@ describe('MaintenanceTask Entity', () => {
     expect(task.getLastServicedAtHours()).toBe(0);
   });
 
-  it('should reject empty name', () => {
+  it('number fields must not be decimal', () => {
+    expect(
+      () => new MaintenanceTask({ ...validProps, intervalHours: 100.5 }),
+    ).toThrow(ValidationException);
+    expect(
+      () =>
+        new MaintenanceTask({ ...validProps, lastServicedAtHours: 100.5123 }),
+    ).toThrow(ValidationException);
+  });
+
+  it('should reject empty or invalid name', () => {
     expect(() => new MaintenanceTask({ ...validProps, name: '' })).toThrow(
       ValidationException,
     );
+    expect(() => new MaintenanceTask({ ...validProps, name: ' ' })).toThrow(
+      ValidationException,
+    );
+    expect(
+      () => new MaintenanceTask({ ...validProps, name: 'a'.repeat(256) }),
+    ).toThrow(ValidationException);
+  });
+
+  it('should reject empty motorcycle id', () => {
+    expect(
+      () => new MaintenanceTask({ ...validProps, motorcycleId: '' }),
+    ).toThrow(ValidationException);
+    expect(
+      () => new MaintenanceTask({ ...validProps, motorcycleId: ' ' }),
+    ).toThrow(ValidationException);
   });
 
   it('should reject intervalHours <= 0', () => {
@@ -44,7 +69,28 @@ describe('MaintenanceTask Entity', () => {
 
   it('should update lastServicedAtHours', () => {
     const task = new MaintenanceTask(validProps);
-    task.markServiced(100);
+    task.markServicedAt(100);
     expect(task.getLastServicedAtHours()).toBe(100);
+  });
+
+  it('should reject newServicedAt < lastServicedAtHours ', () => {
+    const task = new MaintenanceTask(validProps);
+    task.markServicedAt(100);
+    expect(task.getLastServicedAtHours()).toBe(100);
+  });
+
+  it('should allow newServicedAt = lastServicedAtHours ', () => {
+    const task = new MaintenanceTask(validProps);
+    task.markServicedAt(100);
+    expect(task.getLastServicedAtHours()).toBe(100);
+
+    expect(() => task.markServicedAt(0)).toThrow(ValidationException);
+  });
+  it('should mark description to null if empty ', () => {
+    const task = new MaintenanceTask({ ...validProps, description: '' });
+    expect(task.getDescription()).toBe(null);
+
+    const task2 = new MaintenanceTask({ ...validProps, description: ' ' });
+    expect(task2.getDescription()).toBe(null);
   });
 });

@@ -24,8 +24,36 @@ describe('Motorcycle Entity', () => {
     expect(moto.getType()).toBe(MotorcycleTypeEnum.ENDURO);
   });
 
+  it('should reject not valid imageUrl', () => {
+    expect(
+      () =>
+        new Motorcycle({ ...validProps, imageUrl: 'some-string-but-not-url' }),
+    ).toThrow(ValidationException);
+  });
+
+  it('should reject empty imageUrl', () => {
+    expect(() => new Motorcycle({ ...validProps, imageUrl: '' })).toThrow(
+      ValidationException,
+    );
+    expect(() => new Motorcycle({ ...validProps, imageUrl: ' ' })).toThrow(
+      ValidationException,
+    );
+  });
+
+  it('should reject without userId', () => {
+    expect(() => new Motorcycle({ ...validProps, userId: '' })).toThrow(
+      ValidationException,
+    );
+    expect(() => new Motorcycle({ ...validProps, userId: ' ' })).toThrow(
+      ValidationException,
+    );
+  });
+
   it('should reject empty name', () => {
     expect(() => new Motorcycle({ ...validProps, name: '' })).toThrow(
+      ValidationException,
+    );
+    expect(() => new Motorcycle({ ...validProps, name: ' ' })).toThrow(
       ValidationException,
     );
   });
@@ -40,18 +68,32 @@ describe('Motorcycle Entity', () => {
     expect(() => new Motorcycle({ ...validProps, brand: '' })).toThrow(
       ValidationException,
     );
+    expect(() => new Motorcycle({ ...validProps, brand: ' ' })).toThrow(
+      ValidationException,
+    );
   });
 
   it('should reject empty model', () => {
     expect(() => new Motorcycle({ ...validProps, model: '' })).toThrow(
       ValidationException,
     );
+    expect(() => new Motorcycle({ ...validProps, model: ' ' })).toThrow(
+      ValidationException,
+    );
   });
 
   it('should reject year in the future', () => {
-    expect(() => new Motorcycle({ ...validProps, year: 2099 })).toThrow(
-      ValidationException,
-    );
+    const currentDateYear = new Date().getFullYear();
+    expect(
+      () => new Motorcycle({ ...validProps, year: currentDateYear + 1 }),
+    ).toThrow(ValidationException);
+  });
+
+  it('should reject year in the future', () => {
+    const currentDateYear = new Date().getFullYear();
+    expect(
+      () => new Motorcycle({ ...validProps, year: currentDateYear }),
+    ).not.toThrow(ValidationException);
   });
 
   it('should reject negative currentHours', () => {
