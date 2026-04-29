@@ -14,5 +14,8 @@ describe('format utils', () => {
     expect(getStatusColor('OK')).toBe('var(--status-ok)');
     expect(getStatusColor('DUE_SOON')).toBe('var(--status-due-soon)');
     expect(getStatusColor('OVERDUE')).toBe('var(--status-overdue)');
+    expect(getStatusColor('NEED_TO_COMPLETE')).toBe(
+      'var(--status-need-to-complete)',
+    );
   });
 });
