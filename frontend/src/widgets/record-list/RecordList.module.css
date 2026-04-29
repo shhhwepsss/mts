@@ -20,9 +20,15 @@
   min-width: 0;
 }
 
-.date {
-  font-size: 14px;
+.taskName {
+  font-size: 15px;
   font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.date {
+  font-size: 13px;
+  color: var(--text-secondary);
   margin-bottom: 4px;
 }
 

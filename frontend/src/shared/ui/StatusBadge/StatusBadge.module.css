@@ -14,3 +14,7 @@
 .OVERDUE {
   color: var(--status-overdue);
 }
+
+.NEED_TO_COMPLETE {
+  color: var(--status-need-to-complete);
+}

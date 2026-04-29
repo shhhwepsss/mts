@@ -25,10 +25,13 @@
   font-size: 14px;
 }
 
-.hours {
-  color: var(--accent);
+.hoursTitle {
   font-size: 18px;
   font-weight: 600;
+
+  & .hours {
+    color: var(--accent);
+  }
 }
 
 .actions {
