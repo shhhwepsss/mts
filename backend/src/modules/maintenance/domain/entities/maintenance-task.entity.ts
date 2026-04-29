@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { BaseEntity } from '@/shared/domain/base.entity';
 import { ValidationException } from '@/shared/domain/exceptions';
+import { NumberValidator } from '@/shared/domain/number-validator';
 import { StringValidator } from '@/shared/domain/string-validator';
 
 interface MaintenanceTaskProps {
@@ -26,12 +27,14 @@ export class MaintenanceTask extends BaseEntity {
   private _isActive: boolean;
 
   constructor(props: MaintenanceTaskProps) {
+    MaintenanceTask.validateMotorcycleId(props.motorcycleId);
     MaintenanceTask.validateName(props.name);
     MaintenanceTask.validateIntervalHours(props.intervalHours);
+    MaintenanceTask.validateLastServicedAtHours(props.lastServicedAtHours);
     super(props.id ?? randomUUID(), props.createdAt, props.updatedAt);
     this._motorcycleId = props.motorcycleId;
     this._name = props.name;
-    this._description = props.description ?? null;
+    this._description = MaintenanceTask.normalizeDescription(props.description);
     this._intervalHours = props.intervalHours;
     this._lastServicedAtHours = props.lastServicedAtHours;
     this._isDefault = props.isDefault;
@@ -61,6 +64,12 @@ export class MaintenanceTask extends BaseEntity {
   }
 
   markServicedAt(atHours: number): void {
+    MaintenanceTask.validateLastServicedAtHours(atHours);
+    if (atHours < this._lastServicedAtHours) {
+      throw new ValidationException(
+        'New serviced hours must be >= current last serviced hours',
+      );
+    }
     this._lastServicedAtHours = atHours;
     this.setUpdatedAt(new Date());
   }
@@ -80,7 +89,11 @@ export class MaintenanceTask extends BaseEntity {
       MaintenanceTask.validateName(props.name);
       this._name = props.name;
     }
-    if (props.description !== null) this._description = props.description;
+    if (props.description !== null) {
+      this._description = MaintenanceTask.normalizeDescription(
+        props.description,
+      );
+    }
     if (props.intervalHours !== null) {
       MaintenanceTask.validateIntervalHours(props.intervalHours);
       this._intervalHours = props.intervalHours;
@@ -89,13 +102,33 @@ export class MaintenanceTask extends BaseEntity {
     this.setUpdatedAt(new Date());
   }
 
+  private static validateMotorcycleId(motorcycleId: string): void {
+    StringValidator.nonEmpty(motorcycleId, 'Motorcycle id');
+  }
+
   private static validateName(name: string): void {
     StringValidator.nonEmpty(name, 'Task name');
+    StringValidator.maxLength(name, 'Task name', 255);
   }
 
   private static validateIntervalHours(intervalHours: number): void {
+    NumberValidator.integer(intervalHours, 'Interval hours');
     if (intervalHours <= 0) {
       throw new ValidationException('Interval hours must be greater than 0');
     }
+  }
+
+  private static validateLastServicedAtHours(
+    lastServicedAtHours: number,
+  ): void {
+    NumberValidator.integer(lastServicedAtHours, 'Last serviced at hours');
+    NumberValidator.nonNegative(lastServicedAtHours, 'Last serviced at hours');
+  }
+
+  private static normalizeDescription(
+    description: string | null,
+  ): string | null {
+    if (description === null) return null;
+    return description.trim().length === 0 ? null : description;
   }
 }

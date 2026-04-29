@@ -29,12 +29,14 @@ export class Motorcycle extends BaseEntity {
   private _imageUrl: string | null;
 
   constructor(props: MotorcycleProps) {
+    Motorcycle.validateUserId(props.userId);
     Motorcycle.validateName(props.name);
     Motorcycle.validateBrand(props.brand);
     Motorcycle.validateModel(props.model);
     Motorcycle.validateYear(props.year);
     Motorcycle.validateType(props.type);
     Motorcycle.validateHours(props.currentHours);
+    Motorcycle.validateImageUrl(props.imageUrl);
     super(props.id ?? randomUUID(), props.createdAt, props.updatedAt);
     this._userId = props.userId;
     this._name = props.name;
@@ -108,9 +110,20 @@ export class Motorcycle extends BaseEntity {
       this._type = props.type;
     }
     if (props.imageUrl !== null) {
+      Motorcycle.validateImageUrl(props.imageUrl);
       this._imageUrl = props.imageUrl;
     }
     this.setUpdatedAt(new Date());
+  }
+
+  private static validateUserId(userId: string): void {
+    StringValidator.nonEmpty(userId, 'User id');
+  }
+
+  private static validateImageUrl(imageUrl: string | null): void {
+    if (imageUrl === null) return;
+    StringValidator.nonEmpty(imageUrl, 'Image URL');
+    StringValidator.url(imageUrl, 'Image URL');
   }
 
   private static validateName(name: string): void {

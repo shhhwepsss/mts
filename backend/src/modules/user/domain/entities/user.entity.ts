@@ -19,6 +19,7 @@ export class User extends BaseEntity {
   constructor(props: UserProps) {
     User.validateName(props.name);
     User.validateEmail(props.email);
+    User.validateAvatarUrl(props.avatarUrl);
     super(props.id ?? randomUUID(), props.createdAt, props.updatedAt);
     this._name = props.name;
     this._email = props.email;
@@ -51,5 +52,11 @@ export class User extends BaseEntity {
   private static validateEmail(email: string): void {
     StringValidator.email(email, 'Email');
     StringValidator.maxLength(email, 'Email', 100);
+  }
+
+  private static validateAvatarUrl(avatarUrl: string | null): void {
+    if (avatarUrl === null) return;
+    StringValidator.nonEmpty(avatarUrl, 'Avatar URL');
+    StringValidator.url(avatarUrl, 'Avatar URL');
   }
 }

@@ -28,4 +28,12 @@ export class StringValidator {
       throw new ValidationException(`${field} must not be empty`);
     }
   }
+
+  static url(value: string, field: string): void {
+    try {
+      new URL(value);
+    } catch {
+      throw new ValidationException(`${field} must be a valid URL`);
+    }
+  }
 }

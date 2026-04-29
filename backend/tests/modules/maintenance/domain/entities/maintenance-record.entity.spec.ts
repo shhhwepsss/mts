@@ -85,9 +85,9 @@ describe('MaintenanceRecord Entity', () => {
   it('should allow performedAtHours equal to currentMotorcycleHours', () => {
     const record = new MaintenanceRecord({
       ...validProps,
-      performedAtHours: 142.5,
+      performedAtHours: 142,
     });
-    expect(record.getPerformedAtHours()).toBe(142.5);
+    expect(record.getPerformedAtHours()).toBe(142);
   });
 
   it('should set null if notes is empty', () => {

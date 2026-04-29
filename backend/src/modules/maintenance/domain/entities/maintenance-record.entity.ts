@@ -1,6 +1,8 @@
 import { randomUUID } from 'crypto';
 import { BaseEntity } from '@/shared/domain/base.entity';
 import { ValidationException } from '@/shared/domain/exceptions';
+import { NumberValidator } from '@/shared/domain/number-validator';
+import { StringValidator } from '@/shared/domain/string-validator';
 
 interface MaintenanceRecordProps {
   id: string | null;
@@ -23,17 +25,21 @@ export class MaintenanceRecord extends BaseEntity {
   private _photos: string[];
 
   constructor(props: MaintenanceRecordProps) {
+    MaintenanceRecord.validateTaskId(props.taskId);
+    MaintenanceRecord.validateMotorcycleId(props.motorcycleId);
+    MaintenanceRecord.validateCurrentMotorcycleHours(props.currentMotorcycleHours);
     MaintenanceRecord.validatePerformedAtHours(
       props.performedAtHours,
       props.currentMotorcycleHours,
     );
     MaintenanceRecord.validatePerformedAtDate(props.performedAtDate);
+    MaintenanceRecord.validatePhotos(props.photos);
     super(props.id ?? randomUUID(), props.createdAt, null);
     this._taskId = props.taskId;
     this._motorcycleId = props.motorcycleId;
     this._performedAtHours = props.performedAtHours;
     this._performedAtDate = props.performedAtDate;
-    this._notes = props.notes ?? null;
+    this._notes = MaintenanceRecord.normalizeNotes(props.notes);
     this._photos = props.photos ?? [];
   }
 
@@ -74,14 +80,37 @@ export class MaintenanceRecord extends BaseEntity {
       MaintenanceRecord.validatePerformedAtDate(props.performedAtDate);
       this._performedAtDate = props.performedAtDate;
     }
-    if (props.notes !== null) this._notes = props.notes;
-    if (props.photos !== null) this._photos = props.photos;
+    if (props.notes !== null) {
+      this._notes = MaintenanceRecord.normalizeNotes(props.notes);
+    }
+    if (props.photos !== null) {
+      MaintenanceRecord.validatePhotos(props.photos);
+      this._photos = props.photos;
+    }
+  }
+
+  private static validateTaskId(taskId: string): void {
+    StringValidator.nonEmpty(taskId, 'Task id');
+  }
+
+  private static validateMotorcycleId(motorcycleId: string): void {
+    StringValidator.nonEmpty(motorcycleId, 'Motorcycle id');
+  }
+
+  private static validateCurrentMotorcycleHours(currentMotorcycleHours: number): void {
+    NumberValidator.integer(currentMotorcycleHours, 'Current motorcycle hours');
+    NumberValidator.nonNegative(
+      currentMotorcycleHours,
+      'Current motorcycle hours',
+    );
   }
 
   private static validatePerformedAtHours(
     performedAtHours: number,
     currentMotorcycleHours: number,
   ): void {
+    NumberValidator.integer(performedAtHours, 'Performed at hours');
+    NumberValidator.nonNegative(performedAtHours, 'Performed at hours');
     if (performedAtHours > currentMotorcycleHours) {
       throw new ValidationException(
         'Performed at hours cannot exceed current motorcycle hours',
@@ -95,5 +124,19 @@ export class MaintenanceRecord extends BaseEntity {
     if (performedAtDate > now) {
       throw new ValidationException('Performed date must not be in the future');
     }
+  }
+
+  private static validatePhotos(photos: string[] | null): void {
+    if (photos === null) return;
+    photos.forEach((photo, index) => {
+      const field = `Photo URL [${index}]`;
+      StringValidator.nonEmpty(photo, field);
+      StringValidator.url(photo, field);
+    });
+  }
+
+  private static normalizeNotes(notes: string | null | undefined): string | null {
+    if (notes === null || notes === undefined) return null;
+    return notes.trim().length === 0 ? null : notes;
   }
 }
