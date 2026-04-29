@@ -1,0 +1,147 @@
+import type { Dictionary } from '../type/dictionary.type';
+
+export const ru: Dictionary = {
+  common: {
+    save: 'Сохранить',
+    saving: 'Сохранение…',
+    saved: 'Сохранено.',
+    cancel: 'Отмена',
+    back: 'Назад',
+    edit: 'Изменить',
+    delete: 'Удалить',
+    notFound: 'Не найдено.',
+    loading: 'Загрузка…',
+    tryAgain: 'Попробуйте ещё раз.',
+  },
+  header: {
+    logout: 'Выйти',
+    settings: 'Настройки',
+  },
+  login: {
+    tagline: 'Система учёта мотоциклов',
+    googleNoCredential: 'Google не вернул учётные данные',
+    loginFailed: 'Не удалось войти — попробуйте ещё раз',
+    googleFailed: 'Ошибка входа через Google',
+  },
+  profile: {
+    title: 'Профиль',
+    email: 'Email',
+    name: 'Имя',
+  },
+  settings: {
+    title: 'Настройки',
+    language: {
+      heading: 'Язык',
+      description: 'Выберите язык интерфейса.',
+    },
+  },
+  languages: {
+    en: 'Английский',
+    ru: 'Русский',
+  },
+  garage: {
+    title: 'Гараж',
+    addMotorcycle: '+ Добавить мотоцикл',
+    loadError: 'Не удалось загрузить гараж. Попробуйте ещё раз.',
+    empty: 'Гараж пуст — добавьте свой первый мотоцикл, чтобы начать.',
+  },
+  motorcycleForm: {
+    name: 'Название',
+    brand: 'Марка',
+    model: 'Модель',
+    year: 'Год',
+    type: 'Тип',
+    currentHours: 'Текущие моточасы',
+    imageUrl: 'Ссылка на изображение (необязательно)',
+    addToGarage: 'Добавить в гараж',
+    saveChanges: 'Сохранить изменения',
+    errors: {
+      nameRequired: 'Название обязательно',
+      brandRequired: 'Марка обязательна',
+      modelRequired: 'Модель обязательна',
+      yearRange: 'Год должен быть от 1900 до 2100',
+      hoursNonNegative: 'Моточасы не могут быть отрицательными',
+    },
+  },
+  motorcycleDetail: {
+    currentHours: 'Текущие моточасы:',
+    logHours: 'Записать моточасы',
+    deleteConfirm: 'Удалить мотоцикл? Это действие необратимо.',
+    notFound: 'Мотоцикл не найден.',
+    tasks: 'Задачи',
+    viewRecords: 'Посмотреть записи →',
+  },
+  addMotorcyclePage: {
+    title: 'Добавить мотоцикл',
+    successMessage: 'Мотоцикл добавлен',
+  },
+  editMotorcyclePage: {
+    title: 'Изменить мотоцикл',
+  },
+  taskDetail: {
+    interval: 'Интервал',
+    lastServiced: 'Последнее обслуживание',
+    never: 'Никогда',
+    remaining: 'Осталось',
+    serviceRequiredNow: 'Требуется обслуживание',
+    untilService: '{hours} до обслуживания',
+    overdueBy: 'Просрочено на {hours}',
+    complete: 'Завершить',
+    deleteConfirm: 'Удалить задачу?',
+    notFound: 'Задача не найдена.',
+  },
+  completeTaskPage: {
+    title: 'Завершить задачу',
+    performedAtHours: 'Моточасы при выполнении',
+    date: 'Дата',
+    notesOptional: 'Заметки (необязательно)',
+    submit: 'Завершить задачу',
+    failed: 'Не удалось завершить задачу. Попробуйте ещё раз.',
+    notFound: 'Не найдено.',
+    errors: {
+      hoursNonNegative: 'Моточасы не могут быть отрицательными',
+      dateRequired: 'Дата обязательна',
+    },
+  },
+  recordsHistory: {
+    title: 'Записи',
+    loadError: 'Не удалось загрузить записи.',
+    empty: 'Записей об обслуживании пока нет.',
+  },
+  recordDetail: {
+    notFound: 'Запись не найдена.',
+    notes: 'Заметки',
+    deleteConfirm: 'Удалить эту запись?',
+  },
+  recordList: {
+    unknownTask: 'Неизвестная задача',
+    performedAt: 'Выполнено при: {hours}',
+  },
+  editRecordPage: {
+    title: 'Изменить запись',
+    hours: 'Моточасы',
+    date: 'Дата',
+    notes: 'Заметки',
+  },
+  logHours: {
+    title: 'Записать моточасы',
+    currentHours: 'Текущие моточасы',
+    minError: 'Моточасы должны быть ≥ текущих ({current}ч)',
+    updateError: 'Не удалось обновить моточасы. Попробуйте ещё раз.',
+  },
+  taskList: {
+    empty: 'Задач пока нет.',
+    everyInterval: 'Каждые {interval} · {remaining}',
+    serviceRequiredNow: 'Требуется обслуживание',
+    remainingShort: 'осталось {hours}',
+    overdueShort: 'просрочено на {hours}',
+  },
+  motorcycleCard: {
+    overdueOne: '{count} просроченная задача',
+    overdueMany: '{count} просроченных задач',
+    dueSoon: '{count} скоро потребуется',
+  },
+  units: {
+    hour: 'ч',
+  },
+};

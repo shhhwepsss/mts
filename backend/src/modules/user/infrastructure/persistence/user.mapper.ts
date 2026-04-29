@@ -8,6 +8,7 @@ export class UserMapper {
       name: orm.name,
       email: orm.email,
       avatarUrl: orm.avatarUrl,
+      language: orm.language,
       createdAt: orm.createdAt,
       updatedAt: orm.updatedAt,
     });
@@ -19,6 +20,7 @@ export class UserMapper {
     orm.name = domain.getName();
     orm.email = domain.getEmail();
     orm.avatarUrl = domain.getAvatarUrl();
+    orm.language = domain.getLanguage();
     return orm;
   }
 }

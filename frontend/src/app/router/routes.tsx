@@ -12,6 +12,7 @@ import { RecordsHistoryPage } from '@/pages/records-history';
 import { RecordDetailPage } from '@/pages/record-detail';
 import { EditRecordPage } from '@/pages/edit-record';
 import { ProfilePage } from '@/pages/profile';
+import { SettingsPage } from '@/pages/settings';
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -100,6 +101,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <ProfilePage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/settings',
+    element: (
+      <ProtectedRoute>
+        <SettingsPage />
       </ProtectedRoute>
     ),
   },

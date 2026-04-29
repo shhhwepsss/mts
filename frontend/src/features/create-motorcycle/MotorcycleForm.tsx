@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Button, TextInput } from '@/shared/ui';
+import { useI18n } from '@/shared/i18n';
 import type { MotorcycleType } from '@/entities/motorcycle';
 import type { MotorcycleFormProps } from './type/motorcycle-form.type';
 import { MOTORCYCLE_TYPES } from './const/motorcycle-types';
@@ -7,11 +8,12 @@ import styles from './MotorcycleForm.module.css';
 
 export function MotorcycleForm({
   initialValue,
-  submitLabel = 'Save',
+  submitLabel,
   isSubmitting,
   onSubmit,
   onCancel,
 }: MotorcycleFormProps) {
+  const { t } = useI18n();
   const [name, setName] = useState(initialValue?.name ?? '');
   const [brand, setBrand] = useState(initialValue?.brand ?? '');
   const [model, setModel] = useState(initialValue?.model ?? '');
@@ -23,16 +25,16 @@ export function MotorcycleForm({
 
   const validate = (): boolean => {
     const next: Record<string, string> = {};
-    if (!name.trim()) next.name = 'Name is required';
-    if (!brand.trim()) next.brand = 'Brand is required';
-    if (!model.trim()) next.model = 'Model is required';
+    if (!name.trim()) next.name = t('motorcycleForm.errors.nameRequired');
+    if (!brand.trim()) next.brand = t('motorcycleForm.errors.brandRequired');
+    if (!model.trim()) next.model = t('motorcycleForm.errors.modelRequired');
     const parsedYear = Number(year);
     if (!Number.isInteger(parsedYear) || parsedYear < 1900 || parsedYear > 2100) {
-      next.year = 'Year must be between 1900 and 2100';
+      next.year = t('motorcycleForm.errors.yearRange');
     }
     const parsedHours = Number(currentHours);
     if (!Number.isFinite(parsedHours) || parsedHours < 0) {
-      next.currentHours = 'Hours must be a non-negative number';
+      next.currentHours = t('motorcycleForm.errors.hoursNonNegative');
     }
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -55,48 +57,48 @@ export function MotorcycleForm({
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <TextInput
-        label="Name"
+        label={t('motorcycleForm.name')}
         value={name}
         onChange={(e) => setName(e.target.value)}
         error={errors.name}
       />
       <TextInput
-        label="Brand"
+        label={t('motorcycleForm.brand')}
         value={brand}
         onChange={(e) => setBrand(e.target.value)}
         error={errors.brand}
       />
       <TextInput
-        label="Model"
+        label={t('motorcycleForm.model')}
         value={model}
         onChange={(e) => setModel(e.target.value)}
         error={errors.model}
       />
       <div className={styles.row}>
         <TextInput
-          label="Year"
+          label={t('motorcycleForm.year')}
           type="number"
           value={year}
           onChange={(e) => setYear(e.target.value)}
           error={errors.year}
         />
         <div className={styles.field}>
-          <label className={styles.label}>Type</label>
+          <label className={styles.label}>{t('motorcycleForm.type')}</label>
           <select
             className={styles.select}
             value={type}
             onChange={(e) => setType(e.target.value as MotorcycleType)}
           >
-            {MOTORCYCLE_TYPES.map((t) => (
-              <option key={t} value={t}>
-                {t}
+            {MOTORCYCLE_TYPES.map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
           </select>
         </div>
       </div>
       <TextInput
-        label="Current Hours"
+        label={t('motorcycleForm.currentHours')}
         type="number"
         step="0.1"
         value={currentHours}
@@ -104,18 +106,18 @@ export function MotorcycleForm({
         error={errors.currentHours}
       />
       <TextInput
-        label="Image URL (optional)"
+        label={t('motorcycleForm.imageUrl')}
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
       />
       <div className={styles.actions}>
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel}>
-            Cancel
+            {t('common.cancel')}
           </Button>
         )}
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving…' : submitLabel}
+          {isSubmitting ? t('common.saving') : (submitLabel ?? t('common.save'))}
         </Button>
       </div>
     </form>

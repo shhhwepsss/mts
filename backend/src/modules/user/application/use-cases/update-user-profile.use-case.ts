@@ -5,6 +5,12 @@ import {
 } from '@/modules/user/domain/ports/user-repository.port';
 import { NotFoundException } from '@/shared/domain/exceptions';
 import { User } from '@/modules/user/domain/entities/user.entity';
+import { UserLanguageEnum } from '@/modules/user/domain/enums/user-language.enum';
+
+export interface UpdateUserProfileInput {
+  name?: string;
+  language?: UserLanguageEnum;
+}
 
 @Injectable()
 export class UpdateUserProfileUseCase {
@@ -13,12 +19,17 @@ export class UpdateUserProfileUseCase {
     private readonly userRepo: UserRepositoryPort,
   ) {}
 
-  async execute(userId: string, name: string): Promise<User> {
+  async execute(userId: string, input: UpdateUserProfileInput): Promise<User> {
     const user = await this.userRepo.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    user.updateName(name);
+    if (input.name !== undefined) {
+      user.updateName(input.name);
+    }
+    if (input.language !== undefined) {
+      user.updateLanguage(input.language);
+    }
     return this.userRepo.save(user);
   }
 }

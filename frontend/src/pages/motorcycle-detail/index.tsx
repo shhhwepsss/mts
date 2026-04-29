@@ -1,29 +1,30 @@
-import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { motorcycleApi } from "@/entities/motorcycle";
-import { taskApi } from "@/entities/task";
-import { Button, Spinner } from "@/shared/ui";
-import { formatHours } from "@/shared/lib";
-import { Header } from "@/widgets/header";
-import { TaskList } from "@/widgets/task-list";
-import { LogHoursModal } from "@/features/log-hours";
-import styles from "./MotorcycleDetail.module.css";
+import { useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { motorcycleApi } from '@/entities/motorcycle';
+import { taskApi } from '@/entities/task';
+import { Button, Spinner } from '@/shared/ui';
+import { useI18n } from '@/shared/i18n';
+import { Header } from '@/widgets/header';
+import { TaskList } from '@/widgets/task-list';
+import { LogHoursModal } from '@/features/log-hours';
+import styles from './MotorcycleDetail.module.css';
 
 export function MotorcycleDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t, formatHours } = useI18n();
   const [logHoursOpen, setLogHoursOpen] = useState(false);
 
   const motorcycleQuery = useQuery({
-    queryKey: ["motorcycle", id],
+    queryKey: ['motorcycle', id],
     queryFn: () => motorcycleApi.getById(id!),
     enabled: !!id,
   });
 
   const tasksQuery = useQuery({
-    queryKey: ["tasks", id],
+    queryKey: ['tasks', id],
     queryFn: () => taskApi.listByMotorcycle(id!),
     enabled: !!id,
   });
@@ -31,13 +32,13 @@ export function MotorcycleDetailPage() {
   const deleteMutation = useMutation({
     mutationFn: () => motorcycleApi.delete(id!),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["motorcycles"] });
-      navigate("/garage");
+      queryClient.invalidateQueries({ queryKey: ['motorcycles'] });
+      navigate('/garage');
     },
   });
 
   const handleDelete = () => {
-    if (confirm("Delete this motorcycle? This cannot be undone.")) {
+    if (confirm(t('motorcycleDetail.deleteConfirm'))) {
       deleteMutation.mutate();
     }
   };
@@ -59,7 +60,7 @@ export function MotorcycleDetailPage() {
       <>
         <Header />
         <div className={styles.wrapper}>
-          <p>Motorcycle not found.</p>
+          <p>{t('motorcycleDetail.notFound')}</p>
         </div>
       </>
     );
@@ -73,35 +74,29 @@ export function MotorcycleDetailPage() {
           <div>
             <h1 className={styles.title}>{motorcycle.name}</h1>
             <p className={styles.meta}>
-              {motorcycle.brand} {motorcycle.model} · {motorcycle.year} ·{" "}
-              {motorcycle.type}
+              {motorcycle.brand} {motorcycle.model} · {motorcycle.year} · {motorcycle.type}
             </p>
             <p className={styles.hoursTitle}>
-              Current moto hours:{" "}
-              <span className={styles.hours}>
-                {formatHours(motorcycle.currentHours)}
-              </span>
+              {t('motorcycleDetail.currentHours')}{' '}
+              <span className={styles.hours}>{formatHours(motorcycle.currentHours)}</span>
             </p>
           </div>
           <div className={styles.actions}>
-            <Button onClick={() => setLogHoursOpen(true)}>Log Hours</Button>
-            <Button
-              variant="outline"
-              onClick={() => navigate(`/garage/${id}/edit`)}
-            >
-              Edit
+            <Button onClick={() => setLogHoursOpen(true)}>{t('motorcycleDetail.logHours')}</Button>
+            <Button variant="outline" onClick={() => navigate(`/garage/${id}/edit`)}>
+              {t('common.edit')}
             </Button>
             <Button variant="danger" onClick={handleDelete}>
-              Delete
+              {t('common.delete')}
             </Button>
           </div>
         </div>
 
         <div className={styles.section}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Tasks</h2>
+            <h2 className={styles.sectionTitle}>{t('motorcycleDetail.tasks')}</h2>
             <Link to={`/garage/${id}/records`} className={styles.sectionLink}>
-              View records →
+              {t('motorcycleDetail.viewRecords')}
             </Link>
           </div>
           <TaskList motorcycleId={id!} tasks={tasks} />

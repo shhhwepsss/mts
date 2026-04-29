@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/shared/auth';
+import { useI18n } from '@/shared/i18n';
 import { GoogleLoginButton } from '@/features/google-login';
 import { Spinner } from '@/shared/ui';
 import styles from './LoginPage.module.css';
 
 export function LoginPage() {
   const { isAuthenticated, isLoading } = useAuth();
+  const { t } = useI18n();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export function LoginPage() {
     <div className={styles.container}>
       <div className={styles.card}>
         <div className={styles.logo}>MTS</div>
-        <p className={styles.tagline}>Motorcycle Tracker System</p>
+        <p className={styles.tagline}>{t('login.tagline')}</p>
         <div className={styles.loginWrap}>
           <GoogleLoginButton />
         </div>

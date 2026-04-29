@@ -23,6 +23,20 @@
   gap: 16px;
 }
 
+.iconLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  padding: 6px;
+  border-radius: var(--radius);
+  transition: color 0.2s;
+}
+
+.iconLink:hover {
+  color: var(--accent);
+}
+
 .userLink {
   display: flex;
   align-items: center;

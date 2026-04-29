@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@/shared/ui';
-import { formatHours } from '@/shared/lib';
+import { useI18n } from '@/shared/i18n';
 import type { MotorcycleCardProps } from './type/motorcycle-card.type';
 import styles from './MotorcycleCard.module.css';
 
 export function MotorcycleCard({ motorcycle, overdueCount = 0, dueSoonCount = 0 }: MotorcycleCardProps) {
   const navigate = useNavigate();
+  const { t, formatHours } = useI18n();
 
   const borderColor =
     overdueCount > 0
@@ -13,6 +14,11 @@ export function MotorcycleCard({ motorcycle, overdueCount = 0, dueSoonCount = 0 
       : dueSoonCount > 0
         ? 'var(--status-due-soon)'
         : 'var(--status-ok)';
+
+  const overdueLabel =
+    overdueCount === 1
+      ? t('motorcycleCard.overdueOne', { count: overdueCount })
+      : t('motorcycleCard.overdueMany', { count: overdueCount });
 
   return (
     <Card borderColor={borderColor} onClick={() => navigate(`/garage/${motorcycle.id}`)}>
@@ -26,14 +32,10 @@ export function MotorcycleCard({ motorcycle, overdueCount = 0, dueSoonCount = 0 
             {motorcycle.brand} {motorcycle.model} · {motorcycle.year}
           </p>
           <p className={styles.hours}>{formatHours(motorcycle.currentHours)}</p>
-          {overdueCount > 0 && (
-            <p className={styles.overdue}>
-              {overdueCount} overdue task{overdueCount > 1 ? 's' : ''}
-            </p>
-          )}
+          {overdueCount > 0 && <p className={styles.overdue}>{overdueLabel}</p>}
           {overdueCount === 0 && dueSoonCount > 0 && (
             <p className={styles.dueSoon}>
-              {dueSoonCount} due soon
+              {t('motorcycleCard.dueSoon', { count: dueSoonCount })}
             </p>
           )}
         </div>

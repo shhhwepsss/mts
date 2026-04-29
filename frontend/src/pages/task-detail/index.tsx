@@ -3,13 +3,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { taskApi } from '@/entities/task';
 import { motorcycleApi } from '@/entities/motorcycle';
 import { Button, Spinner, StatusBadge } from '@/shared/ui';
-import { formatHours } from '@/shared/lib';
+import { useI18n } from '@/shared/i18n';
 import { Header } from '@/widgets/header';
 
 export function TaskDetailPage() {
   const { id, taskId } = useParams<{ id: string; taskId: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t, formatHours } = useI18n();
 
   const tasksQuery = useQuery({
     queryKey: ['tasks', id],
@@ -46,10 +47,17 @@ export function TaskDetailPage() {
     return (
       <>
         <Header />
-        <div style={{ padding: 24 }}>Task not found.</div>
+        <div style={{ padding: 24 }}>{t('taskDetail.notFound')}</div>
       </>
     );
   }
+
+  const remainingLabel =
+    task.status === 'NEED_TO_COMPLETE'
+      ? t('taskDetail.serviceRequiredNow')
+      : task.hoursRemaining >= 0
+        ? t('taskDetail.untilService', { hours: formatHours(task.hoursRemaining) })
+        : t('taskDetail.overdueBy', { hours: formatHours(-task.hoursRemaining) });
 
   return (
     <>
@@ -63,38 +71,32 @@ export function TaskDetailPage() {
           <p style={{ color: 'var(--text-secondary)', marginBottom: 16 }}>{task.description}</p>
         )}
         <dl style={{ display: 'grid', gridTemplateColumns: '180px 1fr', rowGap: 12, marginBottom: 32 }}>
-          <dt style={{ color: 'var(--text-secondary)' }}>Interval</dt>
+          <dt style={{ color: 'var(--text-secondary)' }}>{t('taskDetail.interval')}</dt>
           <dd>{formatHours(task.intervalHours)}</dd>
-          <dt style={{ color: 'var(--text-secondary)' }}>Last serviced</dt>
+          <dt style={{ color: 'var(--text-secondary)' }}>{t('taskDetail.lastServiced')}</dt>
           <dd>
             {task.lastServicedAtHours !== null
               ? formatHours(task.lastServicedAtHours)
-              : 'Never'}
+              : t('taskDetail.never')}
           </dd>
-          <dt style={{ color: 'var(--text-secondary)' }}>Remaining</dt>
-          <dd>
-            {task.status === 'NEED_TO_COMPLETE'
-              ? 'Service required now'
-              : task.hoursRemaining >= 0
-                ? `${formatHours(task.hoursRemaining)} until service`
-                : `${formatHours(-task.hoursRemaining)} overdue`}
-          </dd>
+          <dt style={{ color: 'var(--text-secondary)' }}>{t('taskDetail.remaining')}</dt>
+          <dd>{remainingLabel}</dd>
         </dl>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <Button onClick={() => navigate(`/garage/${id}/tasks/${taskId}/complete`)}>
-            Complete
+            {t('taskDetail.complete')}
           </Button>
           <Button variant="outline" onClick={() => navigate(`/garage/${id}`)}>
-            Back
+            {t('common.back')}
           </Button>
           {!task.isDefault && (
             <Button
               variant="danger"
               onClick={() => {
-                if (confirm('Delete task?')) deleteMutation.mutate();
+                if (confirm(t('taskDetail.deleteConfirm'))) deleteMutation.mutate();
               }}
             >
-              Delete
+              {t('common.delete')}
             </Button>
           )}
         </div>

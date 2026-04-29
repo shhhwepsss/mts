@@ -1,11 +1,11 @@
 import type { Status } from '@/shared/ui/StatusBadge/type/status-badge.type';
 
-export function formatHours(hours: number): string {
-  return `${hours}h`;
+export function formatHours(hours: number, unit: string = 'h'): string {
+  return `${hours}${unit}`;
 }
 
-export function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
+export function formatDate(date: Date, locale: string = 'en-US'): string {
+  return new Intl.DateTimeFormat(locale, {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
