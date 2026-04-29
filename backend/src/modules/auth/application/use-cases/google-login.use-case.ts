@@ -16,6 +16,7 @@ import {
   TokenPair,
 } from '@/modules/auth/application/services/jwt-token.service';
 import { ValidationException } from '@/shared/domain/exceptions';
+import { UserLanguageEnum } from '@/modules/user/domain/enums/user-language.enum';
 
 @Injectable()
 export class GoogleLoginUseCase {
@@ -56,6 +57,7 @@ export class GoogleLoginUseCase {
       avatarUrl: payload.picture ?? null,
       createdAt: null,
       updatedAt: null,
+      language: UserLanguageEnum.EN,
     });
     const savedUser = await this.userRepo.save(user);
 
