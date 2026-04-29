@@ -3,3 +3,5 @@
 .superpowers
 .vite
 dist
+.env
+certbot/
